@@ -431,3 +431,93 @@ header ul li:not(:last-child) a:hover::after
     color: #DBBB92;
 }
 
+/*cetrta stran - index*/
+.cetrtastranindex
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 90vh;
+}
+
+.cetrtastranindex .text
+{
+    margin-top: 4em;
+    text-align: center;
+}
+
+.cetrtastranindex .text h1
+{
+    font-family: Poppins-Bold;
+    font-size: 3em;
+    color: #B4B436;
+}
+
+.cetrtastranindex .text p
+{
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.3em;
+    max-width: 60%;
+    margin-bottom: 5em;
+}
+
+.cetrtastranindex .text p span
+{
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    color: #DBBB92;
+}
+
+.cetrtastranindex .slike
+{
+    width: fit-content;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 3em;
+    column-gap: 3em;
+}
+
+.cetrtastranindex .slike img
+{
+    width: 30em;
+    border-radius: 1em;
+    transition: all 1s;
+}
+
+.cetrtastranindex .slike .okvir
+{
+    border-radius: 1em;
+    overflow: hidden;
+    width: 30em;
+    max-height: 19em;
+}
+
+.cetrtastranindex .slike img:hover
+{
+    scale: 1.2;
+}
+
+.cetrtastranindex .gumb .gumbvec
+{
+    margin-top: 3em;
+    padding: 1em 2.3em;
+    background-color: #B4B436;
+    border-radius: 3em;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1em;
+    transition: all 1s ease;
+    width: fit-content;
+}
+
+.cetrtastranindex .gumb .gumbvec span
+{
+    font-size: 1.2em;
+}
+
+.cetrtastranindex .gumb .gumbvec:hover
+{
+    background-color: #DBBB92;
+}
