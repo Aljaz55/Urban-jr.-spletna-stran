@@ -29,7 +29,8 @@
 
 SLIKE KAKO BO IZGLEDALA SPLETNA STRAN
 
-- 
+- Link do Notiona oz do najnih slik, če slučajno ne delujejo tukaj
+https://www.notion.so/Zaklju-na-naloga-1afcd1e68f39804a80d7e6c480b564da?pvs=4
     
     ![IMG_20250326_094054.jpg](IMG_20250326_094054.jpg)
     
