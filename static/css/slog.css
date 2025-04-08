@@ -521,3 +521,177 @@ header ul li:not(:last-child) a:hover::after
 {
     background-color: #DBBB92;
 }
+
+/*prijava na novice - index*/
+.cetrti
+{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 1s ease;
+}
+
+.cetrti .text
+{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    gap: 2em;
+    margin-bottom: 2em;
+}
+
+.cetrti i
+{
+    font-size: 2em;
+    color: #B4B436;
+}
+
+.cetrti p
+{
+    font-family: Poppins-Bold;
+    font-size: 1.2em;
+}
+
+.cetrti .emailform
+{
+    display: flex;
+    all: unset;
+    padding: 0.5em 1em;
+    border-radius: 2em;
+    font-size: 1.3em;
+    color: black;
+    border: solid 0.01em gray;
+    position: relative;
+}
+
+.cetrti .emailform input
+{
+    all: unset;
+    font-size: 0.8em;
+}
+
+.cetrti .emailform input::placeholder
+{
+    color: black;
+}
+
+.cetrti .emailform button
+{
+    all: unset;
+    color: black;
+    background-color: #B4B436;
+    padding: 0.7em 0.7em;
+    border-radius: 2em;
+    cursor: pointer;
+    font-size: 0.8em;
+    transition: all 1s;
+}
+
+.cetrti .emailform button:hover
+{
+    background-color: #DBBB92;
+}
+
+.loading
+{
+    width: 1em;
+    height: 1em;
+    border: 2px solid transparent;
+    border-top-color: gray;
+    border-radius: 50%;
+    animation: spin 0.5s linear infinite;
+    display: none;
+}
+
+@keyframes spin
+{
+    from
+    {
+        transform: rotate(0deg);
+    }
+    to
+    {
+        transform: rotate(360deg);
+    }
+}
+/*peta stran - drugi del - index*/
+
+footer
+{
+    display: flex;
+    justify-content: center;
+    padding: 5em;
+    gap: 10em;
+}
+
+footer .prvi h2
+{
+    display: none;
+}
+
+footer h2
+{
+    font-family: Poppins-Bold;
+    margin-bottom: 0.75em;
+}
+
+footer ul li
+{
+    list-style: none;
+    font-size: 1.2em;
+}
+
+footer .tretji ul li a
+{
+    display: block;
+    color: black;
+    text-decoration: none;
+    transition: all 1s;
+}
+
+footer .drugi ul li a
+{
+    font-size: 1.8em;
+    color: #B4B436;
+    margin-right: 0.5em;
+    transition: all 1s;
+}
+
+footer .tretji ul li a:hover
+{
+    scale: 1.05;
+}
+
+footer .drugi ul li a:hover
+{
+    color: #DBBB92;
+}
+
+footer .logo img
+{
+    width: 5em;
+}
+
+/*peta stran - tretji del - index*/
+
+.petastrantretjiindex
+{
+    display: flex;
+    justify-content: center;
+    background-color: #B4B436;
+    gap: 5em;
+    padding: 1em;
+    color: white;
+}
+
+.petastrantretjiindex a
+{
+    color: white;
+    text-decoration: none;
+    transition: all 1s;
+}
+
+.petastrantretjiindex a:hover
+{
+    scale: 1.1;
+}
