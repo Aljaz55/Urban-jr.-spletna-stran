@@ -41,6 +41,18 @@
 **STRATEGIJA PRIDOBIVANJA UPORABNIKOV**
 
 - Uporabnike pridobili z promocijo z letaki oziroma vizitkami, katere bi dodali v nabiralnike, večinoma po gorenjski, kasneje še drugje, ker je kmetija že kar znana in ima veliko stalnih strank, zato imamo tudi željo po širjenju
+
+  **ANALIZA TRGA**
+
+- Trg še ni ravno razširjen
+- Zadnje čase vedno bolj popularna domača hrana, zelenjava, meso, itd,..
+- Par ključnih konkurentov je:
+
+- Kmetija Štepec, ki ima zelo dobro razširjeno promocijo preko Tik Toka.
+
+- Kmatija Monera, razširjena v dolenjski regiji, zelo dobra sploh zaradi širjenja regenerativnega kmetijstva.
+
+- Kmetija Zeleni pašnik, kot konkurenca jo dojema najina stranka, v okolici Ljubljane, ima dobro možnost pridobitve veliko strank, ker je blizu Ljubljane, a dovolj oddaljena, da je na vasi.
   
 
 SLIKE KAKO BO IZGLEDALA SPLETNA STRAN
