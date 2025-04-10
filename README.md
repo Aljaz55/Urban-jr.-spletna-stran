@@ -27,6 +27,34 @@
 
 - Morala bova zagotoviti varnost, da nebodo hekerji vdrli v program sploh pri Admin prijava
 
+
+**VIR PRIHODKA**
+
+- Za naju bi bil vir dohodka prodaja spletne trgovine in pa upravljanje spletne strani (se prepričan, da bi jo rabili posodabljati, odpravljati buge, itd,… kar dosti)
+
+**STROŽKI**
+
+- Stroški so predvsem registracija domene približno 12 eur na leto in pa gostovanje največ 50 eur na leto za dober paket na Neoservu, letaki kasneje opisani približno 20 eur
+
+![image.png](attachment:a6d1817b-2e2d-4d44-a73e-532ea75019c0:image.png)
+
+**STRATEGIJA PRIDOBIVANJA UPORABNIKOV**
+
+- Uporabnike pridobili z promocijo z letaki oziroma vizitkami, katere bi dodali v nabiralnike, večinoma po gorenjski, kasneje še drugje, ker je kmetija že kar znana in ima veliko stalnih strank, zato imamo tudi željo po širjenju
+
+  **ANALIZA TRGA**
+
+- Trg še ni ravno razširjen
+- Zadnje čase vedno bolj popularna domača hrana, zelenjava, meso, itd,..
+- Par ključnih konkurentov je:
+
+- Kmetija Štepec, ki ima zelo dobro razširjeno promocijo preko Tik Toka.
+
+- Kmatija Monera, razširjena v dolenjski regiji, zelo dobra sploh zaradi širjenja regenerativnega kmetijstva.
+
+- Kmetija Zeleni pašnik, kot konkurenca jo dojema najina stranka, v okolici Ljubljane, ima dobro možnost pridobitve veliko strank, ker je blizu Ljubljane, a dovolj oddaljena, da je na vasi.
+  
+
 SLIKE KAKO BO IZGLEDALA SPLETNA STRAN
 
 - Link do Notiona oz do najnih slik, če slučajno ne delujejo tukaj
