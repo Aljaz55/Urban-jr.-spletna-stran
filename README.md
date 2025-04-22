@@ -2,7 +2,7 @@
 
 ### **(Izbrana) 6. "Urban JR.**
 
-- ***[https://www.facebook.com/UrbanJr.Drazgose/](https://www.facebook.com/UrbanJr.Drazgose/)
+- [https://www.facebook.com/UrbanJr.Drazgose/](https://www.facebook.com/UrbanJr.Drazgose/)
 - Spletna trgovina Urban JR, je trgovina, ki prodaja jajca, piščance, … Spletna trgovina bi imela tudi Admin prijavo in bi potem lahko dodajali objave, in napisali kolikšna je zaloga
 - Navigacijska vrstica: Levo: Domov, O nas, Trgovina, Lokacija, Kontakt | Desno: Logotip
 - Domov: Leva stran krivuljasto belo ozadje, Desna stran in prelivanje v levo slika
