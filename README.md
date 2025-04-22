@@ -1,6 +1,6 @@
 # Zaključna naloga
 
-### **(Izbrana) 6. "Urban JR.**
+### **(Izbrana) 6. Urban JR.**
 
 - [https://www.facebook.com/UrbanJr.Drazgose/](https://www.facebook.com/UrbanJr.Drazgose/)
 - Spletna trgovina Urban JR, je trgovina, ki prodaja jajca, piščance, … Spletna trgovina bi imela tudi Admin prijavo in bi potem lahko dodajali objave, in napisali kolikšna je zaloga
