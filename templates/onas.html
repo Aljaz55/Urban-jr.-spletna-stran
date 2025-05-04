@@ -66,7 +66,15 @@
                             <li><a href="/trgovina">Trgovina</a></li>
                             <li><a href="/blog">Blog</a></li>
                             <li><a href="/kontakt">Kontakt</a></li>
-                            <li><a href="/kosarica"><i class="fa-solid fa-cart-arrow-down"></i></a></li>
+                            <li id="lipregled" style="display:none;"><a href="/pregled">Pregled</a></li>
+                            <li>
+                                <a href="/kosarica">
+                                <i class="fa-solid fa-cart-arrow-down"></i>
+                                {% if st_izdelkov > 0 %}
+                                <span class="kosaricastevec">{{ st_izdelkov }}</span>
+                                {% endif %}
+                                </a>
+                            </li>
                             <div class="search" id="search">
                                 <input type="text" placeholder="Poiščite na strani..." id="search-input">
                                 <button class="gumbsearch" id="gumbsearch"><i class="fa-solid fa-magnifying-glass"></i></button>
@@ -74,7 +82,8 @@
                         </ul>
                     </nav>
                     <div class="search-results" id="search-results"></div>
-                </header>
+                </header>            
+
                 <div class="nadozadjemostali">
                     <h1>O NAS</h1>
                     <p>Naša zgodba je prepletena z ljubeznijo do narave in tradicije. Zavezani smo k <span>trajnostnemu</span> in <span>odgovornemu</span> kmetovanju, kjer združujemo dediščino preteklosti z inovacijami prihodnosti. Na kmetiji ustvarjamo prostor za <span>skladen sožitje človeka in narave</span>, pri čemer spoštujemo ekosisteme in gradimo temelje za prihodnje generacije.</p>
@@ -196,6 +205,14 @@
               ctx.fillText(mesec, x + (barWidth - 20) / 2, height - 20);
             });
         </script>
+
+    <div class="cetrtastranonas">
+        <div class="temnoonas">
+            <h1>VIZIJE IN CILJI</h1>
+            <p>Naša vizija temelji na ustvarjanju trajnostnega in naravi prijaznega kmetovanja, kjer se tradicija prepleta z inovacijami. Verjamemo v sklenjen krogotok narave, kjer vsak element prispeva k ravnovesju ekosistema. Naš cilj je razvijati in širiti prakse, ki podpirajo <span>harmonično sožitje živali, rastlin in tal</span>, hkrati pa zagotavljajo kakovostne, naravne pridelke. Z inovativnimi pristopi si prizadevamo za <span>odgovorno in sonaravno kmetovanje</span>, ki bo služilo tako današnjim kot prihodnjim generacijam.</p>
+        </div>
+    </div>
+
     <div class="petastrandrugiindex">
         <div class="poravnava">
             <footer>
@@ -253,4 +270,142 @@
             <a href="#" onclick="AdminClick()">Admin</a>
         </div>
     </div>
+<!-- pregled se pokaže če si admin   -->
+<script>
+    window.onload = function() {
+        var admin_mode = {{ admin_mode | tojson }};
+        var element = document.getElementById("lipregled");
+        if (admin_mode) {
+            element.style.display = "block";
+        }
+        else {
+            element.style.display = "none";
+        }
+    };
+</script>
+<!-- admin link izbira glede na to ali si prijavljen   -->
+<script>
+    function AdminClick() {
+        var admin_mode = {{ admin_mode | tojson }};
+        if (admin_mode) {
+            window.location.href = "/logout";
+        } else {
+            window.location.href = "/admin";
+        }
+    }
+</script>
 
+<!-- poskus dodajanja e-maila na seznam TinyDB -->
+<script>
+    function poskusDodajanjaMail() {
+        event.preventDefault();
+        var mail = document.getElementById("emailInput");
+    
+        $.ajax({
+            url: "/poskusDodajanjaMail",
+            method: "POST", 
+            data: {
+                mail: mail.value,
+
+            },
+            success: function(result) {
+                console.log("AJAX success, rezultat:", result);
+                if(result.success == false) {
+                    document.getElementById("emailInput").style.backgroundColor = "#FF474C";
+                }
+                else{
+                    window.location.href = "/onas";
+                }
+            },
+
+        });
+    }
+    
+    
+    </script>
+
+<!--/* Tukaj je za telefonprikaz meni */ -->
+<script>
+    function toggleMenu() {
+        let menu = document.getElementById("navmenu");
+        let menuButton = document.querySelector(".menutelefon");
+
+        menu.classList.toggle("active");
+        menuButton.classList.toggle("active");
+    }
+</script>
+<!--/* Tukaj je za telefonprikaz meni */ -->
+
+<!--/* Tukaj je za search bar scripta */ -->
+<script>
+    let izdelki = ["Jajca", "Piščanec", "Mleko", "Zelenjava", "Govedina"];
+    
+    const searchInput = document.getElementById('search-input');
+    const searchResultsContainer = document.getElementById('search-results');
+    
+    searchInput.addEventListener('input', function () {
+        let query = this.value.toLowerCase();
+        searchResultsContainer.innerHTML = '';
+    
+        if (query.length > 0) {
+            let filtered = izdelki.filter(item => item.toLowerCase().includes(query));
+    
+            if (filtered.length > 0) {
+                searchResultsContainer.style.display = 'block';
+                filtered.forEach(item => {
+                    let resultItem = document.createElement('p');
+                    resultItem.textContent = item;
+                    resultItem.style.cursor = "pointer";
+                    resultItem.addEventListener('click', function () {
+                        searchInput.value = item;
+                        window.location.href = "/trgovina";
+                    });
+                    searchResultsContainer.appendChild(resultItem);
+                });
+            } else {
+                searchResultsContainer.style.display = 'none';
+            }
+        } else {
+            searchResultsContainer.style.display = 'none';
+        }
+    });
+    searchInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            if (searchInput.value.trim().length > 0) {
+                window.location.href = "/trgovina";
+            }
+        }
+    });
+</script>
+
+
+<!--/* Tukaj je za cekiranje ce je mail prav napisan*/ -->
+<script>
+    document.getElementById("emailInput").addEventListener("input", function () {
+let email = this.value;
+let emailStatus = document.getElementById("emailStatus");
+let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+let loadingIndicator = document.createElement("span");
+loadingIndicator.classList.add("loading");
+
+emailStatus.innerHTML = ""; // Počisti prejšnjo vsebino
+emailStatus.appendChild(loadingIndicator); // Dodaj loading krogec
+loadingIndicator.style.display = "inline-block";
+
+setTimeout(() => {
+    if (emailRegex.test(email)) {
+        emailStatus.innerHTML = "✅";
+        emailStatus.style.color = "green";
+    } else {
+        emailStatus.innerHTML = "❌";
+        emailStatus.style.color = "red";
+    }
+}, 500); // Počakaj 0,5s preden pokaže rezultat
+});
+</script>
+<!--/* Tukaj je za cekiranje ce je mail prav napisan*/ -->
+
+</body>
+</html>
