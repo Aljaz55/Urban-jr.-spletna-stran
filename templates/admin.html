@@ -58,19 +58,19 @@
 
     $.ajax({
         url: "/loginTry",
-        method: "POST", 
+        method: "POST",  // Ensure POST request
         data: {
             ime: ime.value,
             geslo: geslo.value
         },
         success: function(result) {
             if(result.redirect_to) {
-                
+                // Redirect to the URL provided in the response
                 window.location.href = result.redirect_to;
             }
         },
         error: function(xhr, status, error) {
-            
+            // Handle the error from the server
             var errorMsg = xhr.responseJSON.error || "An error occurred.";
             document.getElementById("errorBox").innerHTML = errorMsg;
         }
@@ -85,11 +85,11 @@
 
     $.ajax({
         url: "/goBack",
-        method: "POST",
+        method: "POST",  // Ensure POST request
 
         success: function(result) {
             if(result.redirect_to) {
-                
+                // Redirect to the URL provided in the response
                 window.location.href = result.redirect_to;
             }
         },

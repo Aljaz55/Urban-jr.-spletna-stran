@@ -1,24 +1,8 @@
-@font-face
-{
-    font-family: Poppins;
-    src: url(fonti/Poppins/Poppins-Regular.ttf);
-}
-
-@font-face
-{
-    font-family: Poppins-Bold;
-    src: url(fonti/Poppins/Poppins-Bold.ttf);
-}
-
-@font-face
-{
-    font-family: Amatic;
-    src: url(fonti/amatic-bold.ttf);
-}
 
 html
 {
     font-size: 0.625vw;
+    scroll-behavior: smooth;
 }
 
 *
@@ -36,7 +20,6 @@ html
 .zacetnastranindex
 {
     height: 100vh;
-    background-image: url(slike/index/DSC08142-41.JPG);
     background-size: cover;
     background-repeat: no-repeat;
     background-position-y: 20%;
@@ -94,6 +77,11 @@ header ul li a
     color: #B4B436;
     transition: all 1s;
     padding-bottom: 0.2em;
+}
+
+header ul li i
+{
+    font-size: 1.3em;
 }
 
 header ul li:not(:last-child) a::after
@@ -163,6 +151,78 @@ header ul li:not(:last-child) a:hover::after
 {
     padding-top: 22em;
     text-align: center;
+}
+
+.menjanje
+{
+    pointer-events: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    top: 50%;
+}
+
+.prev, .next
+{
+    pointer-events: auto;
+    position: absolute;
+    color: white;
+    background-color: transparent;
+    font-size: 5em;
+    cursor: pointer;
+    border: none;
+    transform: translateY(-50%);
+    padding: 0em 1em;
+    height: 100%;
+}
+
+.prev:hover
+{
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.2) 0em, rgba(0, 0, 0, 0) 100%);
+}
+
+.next:hover
+{
+    background: linear-gradient(to left, rgba(0, 0, 0, 0.2) 0em, rgba(0, 0, 0, 0) 100%);
+}
+
+
+.prev
+{
+    left: 0em;
+}
+
+.next
+{
+    right: 0em;
+}
+
+.krogci
+{
+    text-align: center;
+    position: absolute;
+    bottom: 2em;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.kr
+{
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    margin: 0 0.5em;
+    border: 0.2em solid white;
+    border-radius: 50%;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+.kr.aktivna
+{
+    background-color: white;
 }
 
 .nadozadjemindex h1
@@ -386,6 +446,8 @@ header ul li:not(:last-child) a:hover::after
 {
     scale: 1.1;
 }
+
+
 /*tretja stran - drugi del - index*/
 .tretjastrandrugiindex
 {
@@ -393,7 +455,6 @@ header ul li:not(:last-child) a:hover::after
     align-items: center;
     justify-content: center;
     height: 70vh;
-    background-image: url(slike/index/DSC08271-58.JPG);
     background-size: cover;
     background-position-y: -40em;
     background-repeat: no-repeat;
@@ -430,6 +491,7 @@ header ul li:not(:last-child) a:hover::after
     letter-spacing: 0.1em;
     color: #DBBB92;
 }
+
 
 /*cetrta stran - index*/
 .cetrtastranindex
@@ -521,6 +583,7 @@ header ul li:not(:last-child) a:hover::after
 {
     background-color: #DBBB92;
 }
+
 
 /*prijava na novice - index*/
 .cetrti
@@ -614,6 +677,7 @@ header ul li:not(:last-child) a:hover::after
         transform: rotate(360deg);
     }
 }
+
 /*peta stran - drugi del - index*/
 
 footer
@@ -672,6 +736,7 @@ footer .logo img
     width: 5em;
 }
 
+
 /*peta stran - tretji del - index*/
 
 .petastrantretjiindex
@@ -695,6 +760,442 @@ footer .logo img
 {
     scale: 1.1;
 }
+
+/* Tukaj je za search bar scripta*/
+.search-results
+{
+    display: none;
+    position: fixed;
+    top: 7em;
+    right: 0;
+    background-color: white;
+    border-radius: 0em 0em 0em 1em;
+    width: 21em;
+    max-height: 18em;
+    overflow-y: auto;
+    z-index: 9999;
+}
+
+.search-results p
+{
+    padding: 0.625em;
+    cursor: pointer;
+    font-size: 1.2em;
+}
+
+.search-results p:hover
+{
+    background-color: #B4B436;
+    color: white;
+}
+
+@media screen and (max-width: 480px) {
+
+    header
+    {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .search-results
+    {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        top: 70%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%;
+        max-height: 80em;
+        overflow-y: auto;
+        background-color: #B4B436;
+        border-radius: 5em;
+        z-index: 9999;
+        display: none;
+    }
+
+    .search-results p
+    {
+        font-size: 5em;
+    }
+}
+
+/* Tukaj je za search bar scripta*/
+
+
+/* Postavitev za mobilni telefon - index*/
+
+@media screen and (max-width: 480px)
+{
+    header
+    {
+        height: 45em;
+        padding: 0 20em 0 8em;
+    }
+
+    header .logo img
+    {
+        width: 45em;
+    }
+
+    header nav
+    {
+        display: none;
+    }
+
+    header ul li a
+    {
+        font-size: 4em;
+    }
+
+    .menutelefon
+    {
+        scale: 1.5;
+    }
+
+    .menutelefon .crtica
+    {
+        display: flex;
+        width: 10em;
+        height: 0.5em;
+        margin-bottom: 2.5em;
+        background-color: black;
+        transition: 0.4s all;
+    }
+
+    .menutelefon.active .crtica:nth-child(1)
+    {
+        transform: translateY(1em) rotate(45deg);
+    }
+
+    .menutelefon.active .crtica:nth-child(2)
+    {
+        display: none;
+    }
+
+    .menutelefon.active .crtica:nth-child(3)
+    {
+        transform: translateY(-1.9em) rotate(-45deg);
+    }
+
+    .navmenu.active
+    {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: white;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: -1;
+    }
+
+    .navmenu.active ul
+    {
+        margin-top: -30em;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .navmenu.active ul li a
+    {
+        font-size: 10em;
+    }
+
+    .search
+    {
+        margin-top: 10em;
+        margin-right: 0;
+        scale: 4;
+    }
+
+    .zacetnastranindex
+    {
+        height: 100vh;
+        background-position-y: 150%;
+        background-position-x: 50%;
+    }
+
+    .nadozadjemindex
+    {
+        padding-top: 60%;
+    }
+
+    .menjanje
+    {
+        display: none;
+    }
+
+    .krogci
+    {
+        display: none;
+    }
+
+
+    .nadozadjemindex h1
+    {
+        font-size: 30em;
+    }
+
+    .nadozadjemindex h2
+    {
+        font-size: 8em;
+    }
+
+    .nadozadjemindex p
+    {
+        margin-top: 5em;
+        font-size: 5em;
+    }
+
+    .nadozadjemindex .gumbnadozadjem
+    {
+        scale: 4;
+        margin-top: 15em;
+    }
+
+    .drugastranindex
+    {
+        height: 100vh;
+    }
+
+    .drugastranindex .vsebina
+    {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: unset;
+    }
+
+    .vsebina .textdruga
+    {
+        width: 80%;
+    }
+
+    .vsebina .textdruga h1
+    {
+        font-size: 7em;
+        margin-bottom: 1em;
+    }
+
+    .vsebina .textdruga p
+    {
+        font-size: 5em;
+    }
+
+    .vsebina .textdruga .texta .gumbveconas
+    {
+        font-size: 4em;
+    }
+
+    .vsebina .slikadruga
+    {
+        display: flex;
+        justify-content: center;
+    }
+
+    .vsebina .slikadruga img
+    {
+        margin-top: 10em;
+        border-radius: 50em;
+        width: 80%;
+    }
+
+
+    .tretjastranprviindex .naslovi
+    {
+        margin-top: 20em;
+        margin-bottom: 10em;
+        justify-content: center;
+        gap: 10em;
+    }
+
+    .tretjastranprviindex .naslovi .naslov a
+    {
+        font-size: 5em;
+    }
+
+    .tretjastranprviindex .crta .ikone
+    {
+        height: 5em;
+        width: 80%;
+    }
+
+    .tretjastranprviindex .crta .ikone .ikona a
+    {
+        scale: 3;
+    }
+
+    .tretjastranprviindex .crta .ikone .ikona a:hover
+    {
+        scale: 4;
+    }
+
+    .tretjastrandrugiindex
+    {
+        background-position-y: unset;
+    }
+
+    .tretjastrandrugiindex .temnoindex h1
+    {
+        text-align: center;
+        font-size: 13em;
+        max-width: 80%;
+        margin-bottom: 1em;
+    }
+
+    .tretjastrandrugiindex .temnoindex p
+    {
+        font-size: 5em;
+        max-width: 80%;
+    }
+
+    .cetrtastranindex
+    {
+        height: fit-content;
+    }
+
+    .cetrtastranindex .text
+    {
+        margin-top: 20em;
+    }
+
+    .cetrtastranindex .text h1
+    {
+        font-size: 12em;
+    }
+
+    .cetrtastranindex .text p
+    {
+        font-size: 5em;
+        max-width: 80%;
+    }
+
+    .cetrtastranindex .slike
+    {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        column-gap: unset;
+        gap: 30em;
+    }
+
+    .cetrtastranindex .slike .okvir
+    {
+        width: 100%;
+        scale: 1.3;
+        max-height: unset;
+        border-radius: 5em;
+    }
+
+    .cetrtastranindex .slike img
+    {
+        border-radius: 5em;
+        width: 100em;
+    }
+
+    .cetrtastranindex .gumb .gumbvec
+    {
+        font-size: 4em;
+        margin-top: 5em;
+    }
+
+    .poravnava
+    {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    footer
+    {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        margin-top: 10em;
+    }
+
+    footer .prvi h2
+    {
+        display: block;
+    }
+
+    footer .logo
+    {
+        display: none;
+    }
+
+    footer .logo img
+    {
+        width: 20em;
+    }
+
+    footer h2
+    {
+        font-size: 10em;
+        margin-bottom: 0.25em;
+    }
+
+    footer ul li
+    {
+        font-size: 5em;
+    }
+
+    footer .drugi
+    {
+        margin-right: unset;
+    }
+
+    .cetrti .text
+    {
+        align-items: center;
+        gap: 10em;
+        margin-bottom: 6em;
+    }
+
+    .cetrti i
+    {
+        font-size: 10em;
+    }
+
+    .cetrti p
+    {
+        font-size: 5em;
+    }
+
+    .cetrti .emailform
+    {
+        font-size: 4em;
+        text-align: left;
+        margin-bottom: 2em;
+    }
+
+    .cetrti .emailform input
+    {
+        margin-right: -7em;
+    }
+
+    .petastrantretjiindex
+    {
+        padding: 5em;
+    }
+
+    .petastrantretjiindex a
+    {
+        font-size: 4em;
+    }
+
+    .petastrantretjiindex p
+    {
+        font-size: 4em;
+    }
+
+}
+
 
 /* O nas html*/
 
@@ -1162,16 +1663,183 @@ footer .logo img
     }
 }
 
+/* Trgovina html*/
+
+/* Prva stran - Trgovina */
+.prvastrantrgovina
+{
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ozadjetrgovina
+{
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position-y: 70%;
+}
+
+.prvastrantrgovina .vsebina .slike
+{
+    margin-top: -5em;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3em;
+    justify-content: center;
+}
+
+.prvastrantrgovina .vsebina .slike .sliketext
+{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.prvastrantrgovina .vsebina .slike .sliketext .slika
+{
+    width: 100%;
+    max-width: 35em;
+    border-radius: 2em;
+    overflow: hidden;
+}
+
+.prvastrantrgovina .vsebina .slike .sliketext img
+{
+    width: 100%;
+    max-width: 35em;
+    border-radius: 2em;
+    display: block;
+    transition: all 1s;
+}
+
+.prvastrantrgovina .vsebina .slike .sliketext:hover img
+{
+    scale: 1.3;
+}
+
+.prvastrantrgovina .vsebina .slike .sliketext .text
+{
+    z-index: 999;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 2em 2em 0 0;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.prvastrantrgovina .vsebina .slike .sliketext h1
+{
+    z-index: 999;
+    margin: 1em;
+    font-size: 1.3em;
+    font-family: Poppins-Bold;
+    color: white;
+}
+
+.prvastrantrgovina .vsebina .slike .sliketext a, .onemogoceno
+{
+    z-index: 999;
+    margin: 1em;
+    padding: 1em 2.3em;
+    background-color: #B4B436;
+    border-radius: 3em;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1em;
+    transition: all 1s ease;
+    width: fit-content;
+}
+
+.prvastrantrgovina .vsebina .slike .sliketext a:hover
+{
+    background-color: #DBBB92;
+}
+
+/* Za telefon Trgovina*/
+
+@media screen and (max-width: 480px)
+{
+
+    .prvastrantrgovina
+    {
+        height: 150vh;
+    }
+
+    .prvastrantrgovina .vsebina .slike
+    {
+        margin-top: -35em;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        scale: 3.5;
+    }
+}
+
+/* prijava za admin */
+
+.bodyAdmin
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.bodyAdmin .naslov
+{
+    border: 0.2em solid gray;
+    border-radius: 0.5em;
+    padding: 2em;
+}
+
+.bodyAdmin h1
+{
+    font-size: 3.5em;
+    margin-bottom: 0.7em;
+}
+
+.bodyAdmin label
+{
+    font-size: 1.4em;
+}
+
+#prijavaAdmin
+{
+    padding: 0.2em;
+}
+
+#rememberBox
+{
+    font-size: 1em;
+}
+
+/* Prva stran - Blog */
+
+.ozadjeblog
+{
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position-y: 70%;
+}
+
 
 
 /* Prva stran - Kontakt */
 
 .prvastrankontakt
 {
-    height: 65vh;
+    height: 70vh;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: top;
     gap: 20em;
 }
 
@@ -1196,6 +1864,7 @@ footer .logo img
     background-repeat: no-repeat;
     padding: 2em;
     border-radius: 2em;
+    margin-top: 4vh;
 }
 
 .prvastrankontakt .vsebina::after
@@ -1299,6 +1968,7 @@ footer .logo img
     display: flex;
     flex-direction: column;
     height: 50vh;
+    margin-top: 4vh;
     gap: 2em;
 }
 
@@ -1366,11 +2036,13 @@ footer .logo img
     height: 50vh;
 }
 
-/* Za telefon O nas*/
+/* Za telefon kontakt*/
 @media screen and (max-width: 480px)
 {
     .prvastrankontakt
     {
+        align-items: center;
+        justify-content: center;
         flex-direction: column;
         height: 90vh;
     }
@@ -1433,7 +2105,890 @@ footer .logo img
 
     .prvastrankontakt form
     {
-        padding-top: 20em;
-        scale: 1.84;
+        height: 30vh;
+        margin-bottom: 10vh;
+        padding-top: 2em;
+        scale: 1.8;
     }
+
+    .prvastrankontakt form h1
+    {
+        
+        font-size: 4em;
+    }
+}
+
+/* Kosarica - Prva stran */
+
+.ozadjekosarica
+{
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position-y: 70%;
+}
+
+.kosaricastevec
+{
+  padding: 0.1em;
+  background-color: red;
+  color: white;
+  font-size: 0.8em;
+  width: 1.3em;
+  height: 1.3em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  position: absolute;
+  top: -0.8em;
+  right: -1em;
+  line-height: 1;
+}
+
+.narocila
+{
+    margin-top: 7em;
+    display: flex;
+    justify-content: space-between;
+    padding: 4em;
+}
+
+.narocila .narocilo
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.narocila .narocilo .nacindostave
+{
+    display: flex;
+    gap: 5em;
+}
+
+.nacindostave label .prevzem
+{
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+    border: 0.3em solid #B4B436;
+    border-radius: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border 0.3s ease;
+}
+
+.nacindostave input[type="radio"]
+{
+    opacity: 0;
+    position: absolute;
+}
+
+.nacindostave input[type="radio"]:checked + .prevzem
+{
+    background-color: #B4B436;
+}
+
+.narocila .narocilo .prikazizdelkov
+{
+    border: solid 0.3em #B4B436;
+    border-radius: 1em;
+    margin-top: 2em;
+    padding: 2em;
+}
+
+.narocila .narocilo .prikazizdelkov h1
+{
+    font-family: Poppins-Bold;
+    font-size: 3em;
+    margin-bottom: 1em;
+    color: #B4B436;
+}
+
+.narocila .narocilo .prikazizdelkov .gp
+{
+    display: flex;
+    flex-direction: column;
+}
+
+.narocila .narocilo .prikazizdelkov button
+{
+    all: unset;
+    margin-top: 3em;
+    padding: 1em 2.3em;
+    background-color: #B4B436;
+    border-radius: 3em;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1em;
+    transition: all 1s ease;
+    width: fit-content;
+}
+
+.narocila .narocilo .prikazizdelkov button:hover
+{
+    cursor: pointer;
+    scale: 1.1;
+    background-color: #DBBB92;
+}
+
+.narocila .narocilo .prikazizdelkov a
+{
+    margin-top: 1em;
+    font-size: 1.1em;
+    text-decoration: none;
+    color: black;
+}
+
+.narocila .narocilo .prikazizdelkov .prikazizdelkovgrid
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.narocila .glavnidelform h1
+{
+    font-family: Poppins-Bold;
+    font-size: 2.5em;
+    margin-bottom: 2.75em;
+    color: #B4B436;
+    width: 80%;
+}
+
+.narocila .glavnidelform h1:nth-child(5)
+{
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.narocila .glavnidelform
+{
+    max-width: 40%;
+}
+
+.narocila .glavnidelform .vsebinaform
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1em;
+}
+
+.narocila .glavnidelform .vsebinaform input
+{
+    all: unset;
+    padding: 1em;
+    border: solid 0.25em #B4B436;
+    border-radius: 0.5em;
+    font-size: 1.2em;
+}
+
+.narocila .prikazizdelkov .prikazizdelkovgrid
+{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1em;
+}
+
+.narocila .vecizdelkov .prikazizdelkov .prikazizdelkovgrid
+{
+    width: 80%;
+}
+
+.prvastranizdelek
+{
+    display: flex;
+}
+
+.prvastranizdelek .vsebinaizdelek .slikeizdelek .sliketext
+{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.prvastranizdelek .vsebinaizdelek .slikeizdelek .sliketext .slika
+{
+    width: 100%;
+    max-width: 35em;
+    border-radius: 2em;
+    overflow: hidden;
+}
+
+.prvastranizdelek .vsebinaizdelek .slikeizdelek .sliketext img
+{
+    width: 100%;
+    max-width: 35em;
+    border-radius: 2em;
+    display: block;
+    transition: all 1s;
+}
+
+.prvastranizdelek .vsebinaizdelek .slikeizdelek .sliketext .text
+{
+    z-index: 999;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 2em 2em 0 0;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.prvastranizdelek .vsebinaizdelek .slikeizdelek .sliketext h1
+{
+    z-index: 999;
+    margin: 1em;
+    font-size: 1.3em;
+    font-family: Poppins-Bold;
+    color: white;
+}
+
+.prvastranizdelek .vsebinaizdelek .slikeizdelek .sliketext a
+{
+    z-index: 999;
+    margin: 1em;
+    padding: 1em 2.3em;
+    background-color: #B4B436;
+    border-radius: 3em;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1em;
+    transition: all 1s ease;
+    width: fit-content;
+}
+
+.prvastranizdelek .vsebinaizdelek .slikeizdelek .sliketext a:hover
+{
+    background-color: #DBBB92;
+}
+
+.prikazizdelkov .prikazizdelkovgrid .vsebinaizdelek .slikeizdelek
+{
+    position: relative;
+}
+
+.stevec
+{
+    position: absolute;
+    bottom: 0em;
+    right: 0.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stevec a
+{
+    margin-bottom: 1em;
+}
+
+.opiskoliko, .opiskolikot
+{
+    position: absolute;
+    bottom: 1.3em;
+    left: 1.5em;
+}
+
+.opiskoliko p, .opiskolikot p
+{
+    font-size: 1.1em;
+    color: white;
+}
+
+.stevecgumb
+{
+    text-decoration: none;
+    background-color: #f1f1f1;
+    color: black;
+    border-radius: 50%;
+    padding: 0.3em 0.6em;
+    font-size: 1.2em;
+    display: inline-block;
+    margin: 0 0.3em;
+}
+
+.stevecgumb:hover
+{
+    background-color: #ddd;
+}
+
+.steveckolicina
+{
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 0.7em 1em;
+    border-radius: 50%;
+    font-size: 1.2em;
+    margin: 0 0.3em;
+}
+
+.telgumbnarocilo
+{
+    display: none;
+}
+
+/* Za telefon Košarica */
+
+@media screen and (max-width: 480px)
+{
+    .narocila
+    {
+        flex-direction: column;
+        margin-top: 45em;
+        max-width: 80%;
+        align-items: center;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .narocila .narocilo .prikazizdelkov .prikazizdelkovgrid
+    {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .nacindostave label .prevzem
+    {
+        font-size: 4em;
+        margin-bottom: 0.5em;
+    }
+
+    .narocila .narocilo .prikazizdelkov
+    {
+        border: solid 1.3em #B4B436;
+        border-radius: 5em;
+        height: fit-content;
+        text-align: center;
+    }
+
+    .narocila .narocilo .prikazizdelkov h1
+    {
+        font-size: 10em;
+        text-align: center;
+    }
+
+    .prikazizdelkov .sliketext
+    {
+        margin-bottom: 5em;
+    }
+
+    .prikazizdelkov .sliketext .text
+    {
+        font-size: 3em;
+    }
+
+    .prikazizdelkov .sliketext .slika
+    {
+        font-size: 3em;
+    }
+
+    .stevec
+    {
+        bottom: 1em;
+        right: 1em;
+        font-size: 2em;
+    }
+
+    .opiskoliko
+    {
+        font-size: 2.5em;
+        bottom: 1em;
+        left: 1.5em;
+    }
+
+    .narocila .narocilo .prikazizdelkov .gp
+    {
+        display: none;
+    }
+
+    .telgumbnarocilo
+    {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    .telgumbnarocilo button
+    {
+        display: inline-block;
+        all: unset;
+        margin-top: 3em;
+        padding: 1em 2.3em;
+        background-color: #B4B436;
+        border-radius: 3em;
+        color: white;
+        text-decoration: none;
+        font-size: 3em;
+        transition: all 1s ease;
+        width: fit-content;
+    }
+
+    .telgumbnarocilo a
+    {
+        text-decoration: none;
+        margin-top: 1em;
+        font-size: 4em;
+        color: black;
+    }
+    
+    .narocila .glavnidelform
+    {
+        max-width: 100%;
+    }
+
+    .narocila .glavnidelform h1
+    {
+        text-align: center;
+        font-size: 10em;
+        width: 100%;
+        margin-top: 1em;
+        margin-bottom: 1em;
+    }
+
+    .narocila .glavnidelform .vsebinaform input
+    {
+        font-size: 2.8em;
+    }
+
+    .narocila .prikazizdelkov .prikazizdelkovgrid
+    {
+        display: flex;
+        flex-direction: column;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .narocila .glavnidelform .slikeizdelek h1
+    {
+        text-align: left;
+    }
+
+
+}
+
+
+/* Pomoc - Prva stran */
+.pomocvsebina
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.pomocvsebina video
+{
+    width: 80em;
+    margin-top: 3em;
+    margin-bottom: 2em;
+}
+
+.pomocvsebina audio
+{
+}
+
+/* Za telefon Pomoč */
+
+@media screen and (max-width: 480px)
+{
+    .pomocvsebina video
+    {
+        width: 150em;
+        margin-top: 10em;
+        margin-bottom: 5em;
+    }
+}
+
+/* Hvala za nakup */
+.hvalazanakup
+{
+    height: 40vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.hvalazanakup h1
+{
+    text-align: center;
+    font-size: 3em;
+    font-family: Poppins-Bold;
+    color: #B4B436;
+}
+
+.hvalazanakup p
+{
+    margin-top: 0.5em;
+    text-align: center;
+    font-size: 1.3em;
+}
+
+.hvalazanakup a
+{
+    display: flex;
+    all: unset;
+    margin-top: 3em;
+    padding: 1em 2.3em;
+    background-color: #B4B436;
+    border-radius: 3em;
+    color: white;
+    text-decoration: none;
+    font-size: 1.2em;
+    transition: all 1s ease;
+    width: fit-content;
+    cursor: pointer;
+}
+
+.hvalazanakup a:hover
+{
+    background-color: #DBBB92;
+    scale: 1.1;
+}
+
+.hvalazanakup p span
+{
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    color: #DBBB92;
+}
+
+/* Za telefon Hvala za nakup*/
+
+@media screen and (max-width: 480px)
+{
+    .hvalazanakup
+    {
+        max-width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hvalazanakup h1
+    {
+        font-size: 10em;
+    }
+
+    .hvalazanakup p
+    {
+        font-size: 5em;
+    }
+
+    .hvalazanakup a
+    {
+        font-size: 4.5em;
+    }
+}
+/* prijava za admin login in logout */
+
+
+.bodyAdmin{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.bodyAdmin form{
+    display: flex;
+    flex-direction: column;
+    
+    
+    
+}
+#prijavaAdmin, #odjavaAdmin{
+    background-color: white;
+    font-weight: bold;
+    font-size: 2em;
+    padding: 0.24em;
+    color: rgb(182, 182, 53);
+
+}
+.bodyAdmin .naslov{
+    background-color: rgba(214, 235, 224, 0.5);
+    border: 0.2em solid gray;
+    border-radius: 0.5em;
+    padding: 2em;
+}
+
+.bodyAdmin h1
+{
+    font-weight: bold;
+    text-shadow: -1px -1px 0 #2e2c2c, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    font-size: 4em;
+    margin-bottom: 0.7em;
+    color: #B4B436;
+}
+
+
+.bodyAdmin label{
+    font-weight: bold;
+    letter-spacing: 0.07em;
+    text-shadow: -1px -1px 0 #2e2c2c, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    font-size: 1.9em;
+    color: #DBBB92;
+}
+
+.gumbiAdmin{
+    padding: 0.2em;
+    margin-top: 0.6em;
+    font-size: 1.8em;
+    background-color: rgb(189, 188, 188);
+    
+}
+
+.bodyAdmin .inputBoxAdmin{
+    margin-bottom: 1.1em;
+}
+
+.okno_za_prodajo{
+     display: none;
+}
+
+.bodyAdmin #errorBox
+{
+    font-size: 1em;
+    font-weight: bold;
+    color: red;
+}
+
+
+/* Za telefon admin login in logout */
+@media screen and (max-width: 480px){
+    .bodyAdmin{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+    
+    .bodyAdmin form{
+        display: flex;
+        flex-direction: column;
+        
+        
+        
+    }
+    #prijavaAdmin, #odjavaAdmin{
+        background-color: rgb(255, 255, 255);
+        font-weight: bold;
+        font-size: 10.5em;
+        padding: 0.3em;
+        color: rgb(182, 182, 53);
+    
+    }
+    .bodyAdmin .naslov{
+        background-color: rgba(214, 235, 224, 0.5);
+        border: 0.2em solid gray;
+        border-radius: 0.5em;
+        padding: 2em;
+    }
+    
+    .bodyAdmin h1
+    {
+        font-weight: bold;
+        text-shadow: -1px -1px 0 #2e2c2c, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        font-size: 14em;
+        margin-bottom: 0.7em;
+        color: #B4B436;
+    }
+    
+    
+    .bodyAdmin label{
+        font-weight: bold;
+        letter-spacing: 0.07em;
+        text-shadow: -1px -1px 0 #2e2c2c, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        font-size: 7em;
+        color: #DBBB92;
+    }
+    
+    .gumbiAdmin{
+        padding: 0.2em;
+        margin-top: 0.6em;
+        font-size: 7em;
+        background-color: rgb(189, 188, 188);
+        
+    }
+    
+    .bodyAdmin .inputBoxAdmin{
+        margin-bottom: 1.1em;
+    }
+    
+    .okno_za_prodajo{
+         display: none;
+    }
+    
+    .bodyAdmin #errorBox
+    {
+        font-size: 4em;
+        font-weight: bold;
+        color: red;
+    }
+}
+
+/* Pregled */
+
+.pregledglavno
+{
+    display: flex;
+    justify-content: space-between;
+    gap: 2em;
+    padding: 2em;
+    flex-wrap: wrap;
+}
+
+.pregledglavno .prikazzaloge,
+.pregledglavno .prikaznarocil,
+.pregledglavno .prikazmaili
+{
+    flex: 1;
+    background-color: #ffffff;
+    padding: 1.5em;
+    border-radius: 0.75em;
+    box-shadow: 0 0.25em 0.75em rgba(0, 0, 0, 0.1);
+    height: auto;
+    max-height: 35em;
+    width: 100%;
+    min-width: fit-content;
+}
+
+.pregledglavno .prikaznarocil table,
+.pregledglavno .prikazmaili table
+{
+    display: block;
+    max-height: 25em;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.pregledglavno .prikazmaili table
+{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.pregledglavno .prikazmaili table tbody tr, .pregledglavno .prikazmaili table tbody tr td
+{
+    display: block;
+    width: 100%;
+}
+
+
+.pregledglavno h1
+{
+    font-size: 3em;
+    color: #B4B436;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    margin-bottom: 1em;
+}
+
+.pregledglavno table
+{
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1em;
+}
+
+.pregledglavno thead
+{
+    background-color: #B4B436;
+    color: white;
+}
+
+.pregledglavno thead th
+{
+    text-align: left;
+    padding: 0.75em;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+}
+
+.pregledglavno tbody td
+{
+    padding: 0.75em;
+    border-bottom: 0.0625em solid #ddd;
+}
+
+.pregledglavno tbody tr:hover
+{
+    background-color: #f1f1f1;
+}
+
+.pregledglavno ul
+{
+    padding-left: 1.2em;
+    margin: 0;
+}
+
+.pregledglavno .prikazzaloge form .izd
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75em 0;
+    border-bottom: 0.0625em solid #ddd;
+}
+
+.pregledglavno .prikazzaloge label
+{
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1em;
+    letter-spacing: 0.1em;
+    color: #333;
+}
+
+.pregledglavno .prikazzaloge input
+{
+    padding: 0.5em;
+    font-size: 1em;
+    letter-spacing: 0.1em;
+    border: 0.0625em solid #ccc;
+    border-radius: 0.375em;
+    width: 5em;
+}
+
+.pregledglavno .prikazzaloge button
+{
+    margin-top: 1.5em;
+    padding: 0.75em 1.5em;
+    background-color: #B4B436;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1em;
+    letter-spacing: 0.1em;
+    font-weight: bold;
+    border: none;
+    border-radius: 0.5em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.pregledglavno .prikazzaloge button:hover
+{
+    background-color: #9b9b2d;
+}
+
+.buttonCopyMails
+{
+    all: unset;
+    color: #DBBB92;
+    background-color: white;
+    padding: 0.7em 0.7em;
+    border-radius: 2em;
+    cursor: pointer;
+    font-size: 0.8em;
+    transition: all 1s;
 }

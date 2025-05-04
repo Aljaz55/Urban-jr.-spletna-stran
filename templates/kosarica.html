@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
     <link rel="icon" href="static/images/skupne/Logo/Znak__URBAN JR_zelen.ico" type="image/x-icon">
-    <title>Urban JR. - Trgovina</title>
+    <title>Urban JR. - O nas</title>
 </head>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
@@ -33,162 +33,149 @@
         font-family: Amatic;
         src: url("{{ url_for('static', filename='fonts/amatic-bold.ttf') }}");
     }
-    .ozadjetrgovina
+
+    .ozadjekosarica
     {
-        background-image: url("{{ url_for('static', filename='images/trgovina/DSC07979-21.JPG') }}");
+        background-image: url("{{ url_for('static', filename='images/onas/DSC08268-57.JPG') }}");
     }
 
 </style>
 <body>
+    <header>
+        <div class="logo">
+            <a href=""><img src="static/images/skupne/Logo/1Logo__URBAN JR_horizontalen.png" alt="Logo"></a>
+        </div>
+    
+        <div class="menutelefon" onclick="toggleMenu()">
+            <div class="crtica"></div>
+            <div class="crtica"></div>
+            <div class="crtica"></div>
+        </div>
+    
+        <nav class="navmenu" id="navmenu">
+            <ul>
+                <li><a href="/">Domov</a></li>
+                <li><a href="/onas">O nas</a></li>
+                <li><a href="/trgovina">Trgovina</a></li>
+                <li><a href="/blog">Blog</a></li>
+                <li><a href="/kontakt">Kontakt</a></li>
+                <li id="lipregled" style="display:none;"><a href="/pregled">Pregled</a></li>
+                <li>
+                    <a href="/kosarica">
+                    <i class="fa-solid fa-cart-arrow-down"></i>
+                    {% if st_izdelkov > 0 %}
+                    <span class="kosaricastevec">{{ st_izdelkov }}</span>
+                    {% endif %}
+                    </a>
+                </li>
+                <div class="search" id="search">
+                    <input type="text" placeholder="Poiščite na strani..." id="search-input">
+                    <button class="gumbsearch" id="gumbsearch"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </div>
+            </ul>
+        </nav>
+        <div class="search-results" id="search-results"></div>
+    </header>
 
-    <div class="zacetnastranostali">
-        <div class="ozadjetrgovina">
-            <div class="temnoostali">
-                <header>
-                    <div class="logo">
-                        <a href=""><img src="static/images/skupne/Logo/1Logo__URBAN JR_horizontalen.png" alt="Logo"></a>
+    <form id="myForm" action="/oddaj_narocilo" method="POST" class="narocila">
+        <div class="narocilo">
+            <div class="nacindostave">
+                <label>
+                    <input type="radio" name="nacindostave" value="osebni" required/>
+                    <div class="osebni prevzem">
+                        <i class="fa-solid fa-building"></i>
+                        <h2>Osebni prevzem</h2>
+                        <p>Strošek dostave:</p>
+                        <p>0,00 €</p>
                     </div>
-                
-                    <div class="menutelefon" onclick="toggleMenu()">
-                        <div class="crtica"></div>
-                        <div class="crtica"></div>
-                        <div class="crtica"></div>
+                </label>
+                <label>
+                    <input type="radio" name="nacindostave" value="dostava" required/>
+                    <div class="dostava prevzem">
+                        <i class="fa-solid fa-truck"></i>
+                        <h2>Dostava na dom</h2>
+                        <p>Strošek dostave:</p>
+                        <p>3,99 €</p>
                     </div>
-                
-                    <nav class="navmenu" id="navmenu">
-                        <ul>
-                            <li><a href="/">Domov</a></li>
-                            <li><a href="/onas">O nas</a></li>
-                            <li><a href="/trgovina">Trgovina</a></li>
-                            <li><a href="/blog">Blog</a></li>
-                            <li><a href="/kontakt">Kontakt</a></li>
-                            <li id="lipregled" style="display:none;"><a href="/pregled">Pregled</a></li>
-                            <li>
-                                <a href="/kosarica">
-                                <i class="fa-solid fa-cart-arrow-down"></i>
-                                {% if st_izdelkov > 0 %}
-                                <span class="kosaricastevec">{{ st_izdelkov }}</span>
-                                {% endif %}
-                                </a>
-                            </li>
-                            <div class="search" id="search">
-                                <input type="text" placeholder="Poiščite na strani..." id="search-input">
-                                <button class="gumbsearch" id="gumbsearch"><i class="fa-solid fa-magnifying-glass"></i></button>
+                </label>
+            </div>
+            <div class="prikazizdelkov">
+                {% if izbrani %}
+                <h1>VAŠA KOŠARICA</h1>
+                <div class="prikazizdelkovgrid">
+                    {% for izdelek in izbrani %}
+                        <div class="prvastranizdelek">
+                            <div class="vsebinaizdelek">
+                                <div class="slikeizdelek">
+                                    {{ izdelek | safe }}
+                                </div>
                             </div>
-                        </ul>
-                    </nav>
-                    <div class="search-results" id="search-results"></div>
-                </header>            
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="gp">
+                    <button type="submit">ODDAJ NAROČILO</button>
+                    <a href="/pomoc">Potrebuje pomoč pri oddaji naročila?</a>
+                </div>
+                {% else %}
+                    <h1>KOŠARICA JE PRAZNA</h1>
+                    <style>
+                        .narocila
+                        {
+                            margin-top: 7em;
+                            gap: 15em;
+                            justify-content: center;
+                        }
+                        @media screen and (max-width: 480px)
+                        {
+                            .narocila
+                            {
+                                margin-top: 45em;
+                            }
+                        }
+                    </style>
+                {% endif %}
+            </div>
+        </div>
 
-                <div class="nadozadjemostali">
-                    <h1>TRGOVINA</h1>
-                    <p>V naši trgovini ponujamo skrbno izbrane izdelke, pridelane z mislijo na <span>kakovost</span> in <span>tradicijo</span>. Verjamemo v pristne okuse narave, zato vam nudimo domače pridelke in ekološke dobrote, ki odražajo našo predanost <span>odgovornemu kmetovanju</span>. Vsak izdelek pripoveduje zgodbo o spoštovanju do zemlje in ljubezni do pristnega načina življenja.</p>
+        <div class="glavnidelform">
+            <h1>VNESITE KONTAKTNE PODATKE</h1>
+            <div class="vsebinaform">
+                <input type="text" name="ime" placeholder="Ime" required autofocus>
+                <input type="text" name="priimek" placeholder="Priimek" required>
+                <input type="tel" name="telefonska" placeholder="Telefonska številka" pattern="^[0-9]{9}$" maxlength="9" required>
+                <input type="email" name="e-pošta" placeholder="E-poštni naslov" pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$" required>
+                <input type="text" name="kraj" placeholder="Kraj" required>
+                <input type="text" name="hisnastevilka" placeholder="Hišna številka" required>
+                <input type="text" name="poštnaštevilka" placeholder="Poštna številka" pattern="[0-9]{4}" required>
+            </div>
+
+            <input type="hidden" name="nacin_dostave" id="nacin_dostave" value="OSEBNI_PREVZEM">
+            <div class="telgumbnarocilo">
+                <button type="submit">ODDAJ NAROČILO</button>
+                <a href="/pomoc">Potrebuje pomoč pri oddaji naročila?</a>
+            </div>
+            {% if neizbrani %}
+            <h1>DODAJTE VEČ IZDELKOV</h1>
+            <div class="vecizdelkov">
+                <div class="prikazizdelkov">
+                    <div class="prikazizdelkovgrid">
+                        {% for izdelek in neizbrani %}
+                            <div class="prvastranizdelek">
+                                <div class="vsebinaizdelek">
+                                    <div class="slikeizdelek">
+                                        {{ izdelek | safe }}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
-    </div>
+    </form>
 
-    <div class="prvastrantrgovina">
-        <div class="vsebina">
-            <div class="slike">
-                <!-- JAJCA -->
-                <div class="sliketext">
-                    <div class="text">
-                        <h1>JAJCA</h1>
-                        {% set zaloga_jajca = zaloga.get('JAJCA', 0) - session.get('kosarica', {}).get('JAJCA', 0) %}
-                        {% if zaloga_jajca > 0 %}
-                            <a href="/dodaj_v_kosarico/JAJCA" class="gumbnarocila"><span>DODAJ V KOŠARICO</span></a>
-                        {% else %}
-                            <span class="gumbnarocila onemogoceno">NI NA VOLJO</span>
-                        {% endif %}
-                    </div>
-                    <div class="slika">
-                        <img src="static/images/trgovina/DSC07972-20.JPG" alt="Jajca">
-                    </div>
-                    <div class="opiskolikot">
-                        <p>V vsakem paketu je 10 jajc</p>
-                    </div>
-                </div>
-    
-                <!-- PIŠČANCI -->
-                <div class="sliketext">
-                    <div class="text">
-                        <h1>PIŠČANCI</h1>
-                        {% set zaloga_piscanci = zaloga.get('PIŠČANCI', 0) - session.get('kosarica', {}).get('PIŠČANCI', 0) %}
-                        {% if zaloga_piscanci > 0 %}
-                            <a href="/dodaj_v_kosarico/PIŠČANCI" class="gumbnarocila"><span>DODAJ V KOŠARICO</span></a>
-                        {% else %}
-                            <span class="gumbnarocila onemogoceno">NI NA VOLJO</span>
-                        {% endif %}
-                    </div>
-                    <div class="slika">
-                        <img src="static/images/trgovina/DSC07979-21.JPG" alt="Piščanci">
-                    </div>
-                    <div class="opiskolikot">
-                        <p>V vsakem paketu je 1 piščanec</p>
-                    </div>
-                </div>
-    
-                <!-- MLEKO -->
-                <div class="sliketext">
-                    <div class="text">
-                        <h1>MLEKO</h1>
-                        {% set zaloga_mleko = zaloga.get('MLEKO', 0) - session.get('kosarica', {}).get('MLEKO', 0) %}
-                        {% if zaloga_mleko > 0 %}
-                            <a href="/dodaj_v_kosarico/MLEKO" class="gumbnarocila"><span>DODAJ V KOŠARICO</span></a>
-                        {% else %}
-                            <span class="gumbnarocila onemogoceno">NI NA VOLJO</span>
-                        {% endif %}
-                    </div>
-                    <div class="slika">
-                        <img src="static/images/trgovina/DSC08006-26.JPG" alt="Mleko">
-                    </div>
-                    <div class="opiskolikot">
-                        <p>V vsakem paketu je 1 liter mleka</p>
-                    </div>
-                </div>
-    
-                <!-- ZELENJAVA -->
-                <div class="sliketext">
-                    <div class="text">
-                        <h1>ZELENJAVA</h1>
-                        {% set zaloga_zelenjava = zaloga.get('ZELENJAVA', 0) - session.get('kosarica', {}).get('ZELENJAVA', 0) %}
-                        {% if zaloga_zelenjava > 0 %}
-                            <a href="/dodaj_v_kosarico/ZELENJAVA" class="gumbnarocila"><span>DODAJ V KOŠARICO</span></a>
-                        {% else %}
-                            <span class="gumbnarocila onemogoceno">NI NA VOLJO</span>
-                        {% endif %}
-                    </div>
-                    <div class="slika">
-                        <img src="static/images/trgovina/DSC07972-20.JPG" alt="Zelenjava">
-                    </div>
-                    <div class="opiskolikot">
-                        <p>Paket mešane zelenjave</p>
-                    </div>
-                </div>
-    
-                <!-- GOVEDINA -->
-                <div class="sliketext">
-                    <div class="text">
-                        <h1>GOVEDINA</h1>
-                        {% set zaloga_govedina = zaloga.get('GOVEDINA', 0) - session.get('kosarica', {}).get('GOVEDINA', 0) %}
-                        {% if zaloga_govedina > 0 %}
-                            <a href="/dodaj_v_kosarico/GOVEDINA" class="gumbnarocila"><span>DODAJ V KOŠARICO</span></a>
-                        {% else %}
-                            <span class="gumbnarocila onemogoceno">NI NA VOLJO</span>
-                        {% endif %}
-                    </div>
-                    <div class="slika">
-                        <img src="static/images/trgovina/DSC07979-21.JPG" alt="Govedina">
-                    </div>
-                    <div class="opiskolikot">
-                        <p>V vsakem paketu je 0.5 kg govedine</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
     <div class="petastrandrugiindex">
         <div class="poravnava">
             <footer>
@@ -259,7 +246,7 @@
         }
     };
 </script>
-    <!-- admin link izbira glede na to ali si prijavljen   -->
+<!-- admin link izbira glede na to ali si prijavljen   -->
 <script>
     function AdminClick() {
         var admin_mode = {{ admin_mode | tojson }};
@@ -290,7 +277,7 @@
                     document.getElementById("emailInput").style.backgroundColor = "#FF474C";
                 }
                 else{
-                    window.location.href = "/trgovina";
+                    window.location.href = "/kosarica";
                 }
             },
 
@@ -355,6 +342,35 @@
     });
 </script>
 
+<!--/* Tukaj je za izberi način dostave scripta */ -->
+<script>
+
+document.getElementById('myForm').addEventListener('submit', function(event) {
+    // Preveri, ali so radio gumbi skriti
+    var radios = document.getElementsByName('nacindostave');
+    var selected = false;
+
+    // Preveri, ali je en radio gumb izbran
+    for (var i = 0; i < radios.length; i++) {
+        console.log("Preverjam radio gumb:", radios[i].value); // Dodaj log za vsak radio gumb
+        if (radios[i].checked) {
+            selected = true;
+            console.log("Izbran radio gumb:", radios[i].value); // Log izbranega gumba
+            break;
+        }
+    }
+
+    // Če noben gumb ni izbran, prikaži opozorilo
+    if (!selected) {
+        alert('Prosimo, izberite način dostave!');
+        event.preventDefault(); // Prepreči pošiljanje obrazca
+    }
+});
+
+
+</script>
+<!--/* Tukaj je za izberi način dostave scripta */ -->
+
 <!--/* Tukaj je za cekiranje ce je mail prav napisan*/ -->
 <script>
     document.getElementById("emailInput").addEventListener("input", function () {
@@ -373,6 +389,7 @@ setTimeout(() => {
     if (emailRegex.test(email)) {
         emailStatus.innerHTML = "✅";
         emailStatus.style.color = "green";
+        document.getElementById("emailInput").style.backgroundColor = "white";
     } else {
         emailStatus.innerHTML = "❌";
         emailStatus.style.color = "red";

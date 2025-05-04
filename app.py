@@ -32,6 +32,9 @@ from dotenv import load_dotenv
 
 #pip install flask --user
 #pip install tinydb
+#pip install dotenv
+#pip install tinydb
+#pip install flask_mail
 # -- pa seveda se kaj drugega :) --
 
 # Load environment variables first
