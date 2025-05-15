@@ -823,6 +823,10 @@ footer .logo img
 
 /* Tukaj je za search bar scripta*/
 
+.telpokazi
+{
+    display: none;
+}
 
 /* Postavitev za mobilni telefon - index*/
 
@@ -849,6 +853,39 @@ footer .logo img
         font-size: 4em;
     }
 
+    .portelpok
+    {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10em;
+    }
+
+    .racpokazi
+    {
+        display: none;
+    }
+
+    .telpokazi
+    {
+        position: relative;
+        display: block;
+        font-size: 5em;
+    }
+
+    .telpokazi .kosaricastevec
+    {
+        font-size: 0.5em;
+    }
+
+    .telpokazi a
+    {
+        font-size: 2em;
+        color: #B4B436;
+    }
+
+    .tel
+
     .menutelefon
     {
         scale: 1.5;
@@ -858,7 +895,7 @@ footer .logo img
     {
         display: flex;
         width: 10em;
-        height: 0.5em;
+        height: 1em;
         margin-bottom: 2.5em;
         background-color: black;
         transition: 0.4s all;
@@ -866,7 +903,7 @@ footer .logo img
 
     .menutelefon.active .crtica:nth-child(1)
     {
-        transform: translateY(1em) rotate(45deg);
+        transform: translateY(2.6em) rotate(45deg);
     }
 
     .menutelefon.active .crtica:nth-child(2)
@@ -876,7 +913,7 @@ footer .logo img
 
     .menutelefon.active .crtica:nth-child(3)
     {
-        transform: translateY(-1.9em) rotate(-45deg);
+        transform: translateY(-1em) rotate(-45deg);
     }
 
     .navmenu.active
@@ -1795,7 +1832,6 @@ footer .logo img
 
 .bodyAdmin .naslov
 {
-    border: 0.2em solid gray;
     border-radius: 0.5em;
     padding: 2em;
 }
@@ -1970,6 +2006,7 @@ footer .logo img
     height: 50vh;
     margin-top: 4vh;
     gap: 2em;
+    max-width: 60%;
 }
 
 .prvastrankontakt form h1
@@ -2108,7 +2145,30 @@ footer .logo img
         height: 30vh;
         margin-bottom: 10vh;
         padding-top: 2em;
+        max-width: 80%;
         scale: 1.8;
+    }
+
+    .prvastrankontakt form input
+    {
+        font-size: 3em;
+    }
+
+    .prvastrankontakt form textarea
+    {
+        border: solid 0.4em #B4B436;
+        border-radius: 1em;
+    }
+
+    .prvastrankontakt form textarea::placeholder
+    {
+        font-size: 2em;
+        padding-left: 0.55em;
+    }
+
+    .prvastrankontakt form button
+    {
+        font-size: 2em;
     }
 
     .prvastrankontakt form h1
@@ -2370,6 +2430,17 @@ footer .logo img
     position: relative;
 }
 
+.skupnacena
+{
+    margin-top: 2em;
+}
+
+.skupnacena h2
+{
+    padding-bottom: 0.5em;
+    border-bottom: solid 0.2em #B4B436;
+}
+
 .stevec
 {
     position: absolute;
@@ -2396,6 +2467,28 @@ footer .logo img
 {
     font-size: 1.1em;
     color: white;
+}
+
+.cena
+{
+    position: absolute;
+    bottom: 2.5em;
+    left: 0;
+}
+
+.cena p
+{
+    z-index: 999;
+    margin: 1em;
+    padding: 0.7em 2em;
+    background-color: #B4B436;
+    border-radius: 3em;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1.2em;
+    transition: all 1s ease;
+    width: fit-content;
 }
 
 .stevecgumb
@@ -2487,6 +2580,14 @@ footer .logo img
         font-size: 3em;
     }
 
+    .skupnacena h2
+    {
+        font-size: 5em;
+        width: fit-content;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
     .stevec
     {
         bottom: 1em;
@@ -2499,6 +2600,16 @@ footer .logo img
         font-size: 2.5em;
         bottom: 1em;
         left: 1.5em;
+    }
+
+    .narocila .cena
+    {
+        bottom: 5em;
+    }
+
+    .narocila .cena p
+    {
+        font-size: 3.5em;
     }
 
     .narocila .narocilo .prikazizdelkov .gp
@@ -2551,10 +2662,18 @@ footer .logo img
         margin-top: 1em;
         margin-bottom: 1em;
     }
+    
+    .narocila .glavnidelform .vsebinaform
+    {
+        display: flex;
+        flex-direction: column;
+        gap: 5em;
+    }
 
     .narocila .glavnidelform .vsebinaform input
     {
-        font-size: 2.8em;
+        font-size: 5em;
+        max-width: 90%;
     }
 
     .narocila .prikazizdelkov .prikazizdelkovgrid
@@ -2592,9 +2711,6 @@ footer .logo img
     margin-bottom: 2em;
 }
 
-.pomocvsebina audio
-{
-}
 
 /* Za telefon Pomoč */
 
@@ -2691,148 +2807,142 @@ footer .logo img
 /* prijava za admin login in logout */
 
 
-.bodyAdmin{
+.bodyAdmin
+{
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-}
-
-.bodyAdmin form{
-    display: flex;
-    flex-direction: column;
-    
-    
-    
-}
-#prijavaAdmin, #odjavaAdmin{
     background-color: white;
-    font-weight: bold;
-    font-size: 2em;
-    padding: 0.24em;
-    color: rgb(182, 182, 53);
-
-}
-.bodyAdmin .naslov{
-    background-color: rgba(214, 235, 224, 0.5);
-    border: 0.2em solid gray;
-    border-radius: 0.5em;
     padding: 2em;
+}
+
+.bodyAdmin .naslov
+{
+    background-color: white;
+    border-radius: 1em;
+    box-shadow: 0 0.4em 1.2em rgba(0, 0, 0, 0.15);
+    padding: 3em;
+    max-width: 31.25em;
+    width: 90%;
 }
 
 .bodyAdmin h1
 {
     font-weight: bold;
-    text-shadow: -1px -1px 0 #2e2c2c, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-    font-size: 4em;
-    margin-bottom: 0.7em;
+    font-family: Poppins-Bold;
+    font-size: 3.2em;
+    margin-bottom: 1.2em;
     color: #B4B436;
+    text-align: center;
 }
 
-
-.bodyAdmin label{
-    font-weight: bold;
-    letter-spacing: 0.07em;
-    text-shadow: -1px -1px 0 #2e2c2c, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-    font-size: 1.9em;
-    color: #DBBB92;
-}
-
-.gumbiAdmin{
-    padding: 0.2em;
-    margin-top: 0.6em;
-    font-size: 1.8em;
-    background-color: rgb(189, 188, 188);
-    
-}
-
-.bodyAdmin .inputBoxAdmin{
-    margin-bottom: 1.1em;
-}
-
-.okno_za_prodajo{
-     display: none;
-}
-
-.bodyAdmin #errorBox
+.bodyAdmin form
 {
-    font-size: 1em;
+    display: flex;
+    flex-direction: column;
+}
+
+.bodyAdmin label
+{
+    font-weight: bold;
+    font-size: 1.4em;
+    color: #333;
+    margin-top: 0.6em;
+}
+
+.inputBoxAdmin
+{
+    padding: 0.8em;
+    font-size: 1.2em;
+    margin-bottom: 1.2em;
+    border-radius: 0.4em;
+    border: 1px solid #ccc;
+}
+
+.gumbiAdmin
+{
+    padding: 0.7em;
+    font-size: 1.3em;
+    margin-top: 0.9em;
+    border: none;
+    border-radius: 0.4em;
+    background-color: #B4B436;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.gumbiAdmin:hover
+{
+    background-color: #DBBB92;
+}
+
+#prijavaAdmin, #loginNazaj
+{
+    width: 100%;
+}
+
+#prijavaAdmin
+{
+    padding: 1em;
+}
+
+#logoutNazaj
+{
+    background-color: #7e7e7e;
+}
+
+#logoutNazaj:hover
+{
+    background-color: #DBBB92;
+}
+
+#loginNazaj
+{
+    background-color: #7e7e7e;
+}
+
+#loginNazaj:hover
+{
+    background-color: #DBBB92;
+}
+
+#errorBox
+{
+    font-size: 1.1em;
     font-weight: bold;
     color: red;
+    margin-bottom: 0.6em;
 }
 
 
 /* Za telefon admin login in logout */
+
 @media screen and (max-width: 480px){
-    .bodyAdmin{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
+    .bodyAdmin .naslov
+    {
+        max-width: 80%;
+        border-radius: 5em;
+        padding: 10em;
     }
-    
-    .bodyAdmin form{
-        display: flex;
-        flex-direction: column;
-        
-        
-        
-    }
-    #prijavaAdmin, #odjavaAdmin{
-        background-color: rgb(255, 255, 255);
-        font-weight: bold;
-        font-size: 10.5em;
-        padding: 0.3em;
-        color: rgb(182, 182, 53);
-    
-    }
-    .bodyAdmin .naslov{
-        background-color: rgba(214, 235, 224, 0.5);
-        border: 0.2em solid gray;
-        border-radius: 0.5em;
-        padding: 2em;
-    }
-    
+
     .bodyAdmin h1
     {
-        font-weight: bold;
-        text-shadow: -1px -1px 0 #2e2c2c, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-        font-size: 14em;
-        margin-bottom: 0.7em;
-        color: #B4B436;
+        font-size: 15em;
     }
-    
-    
-    .bodyAdmin label{
-        font-weight: bold;
-        letter-spacing: 0.07em;
-        text-shadow: -1px -1px 0 #2e2c2c, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-        font-size: 7em;
-        color: #DBBB92;
-    }
-    
-    .gumbiAdmin{
-        padding: 0.2em;
-        margin-top: 0.6em;
-        font-size: 7em;
-        background-color: rgb(189, 188, 188);
-        
-    }
-    
-    .bodyAdmin .inputBoxAdmin{
-        margin-bottom: 1.1em;
-    }
-    
-    .okno_za_prodajo{
-         display: none;
-    }
-    
-    .bodyAdmin #errorBox
+
+    .inputBoxAdmin
     {
-        font-size: 4em;
-        font-weight: bold;
-        color: red;
+        font-size: 7em;
     }
+
+    .gumbiAdmin
+    {
+        font-size: 7em;
+    }
+
 }
 
 /* Pregled */
@@ -2843,7 +2953,7 @@ footer .logo img
     justify-content: space-between;
     gap: 2em;
     padding: 2em;
-    flex-wrap: wrap;
+    
 }
 
 .pregledglavno .prikazzaloge,
@@ -2878,7 +2988,7 @@ footer .logo img
     box-sizing: border-box;
 }
 
-.pregledglavno .prikazmaili table tbody tr, .pregledglavno .prikazmaili table tbody tr td
+.pregledglavno .prikazmaili table thead tr, .pregledglavno .prikazmaili table tbody tr, .pregledglavno .prikazmaili table tbody tr td
 {
     display: block;
     width: 100%;
@@ -2991,4 +3101,153 @@ footer .logo img
     cursor: pointer;
     font-size: 0.8em;
     transition: all 1s;
+}
+
+.prikazmaili .thkopiraj
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.prikazmaili .thkopiraj span
+{
+    font-weight: 600;
+}
+
+@media screen and (max-width: 480px)
+{
+    .pregledglavno
+    {
+        flex-direction: column;
+        gap: 10em;
+        max-width: 45%;
+        scale: 2;
+        justify-content: center;
+        align-items: center;
+        margin-left: auto;
+        margin-right: auto;
+        height: 140vh;
+    }
+
+
+    .pregledglavno .prikaznarocil
+    {
+       max-width: 100%;
+    }
+
+    .pregledglavno .prikazzaloge,
+    .pregledglavno .prikazmaili
+    {
+        font-size: 1.8em;
+        max-width: 95%;
+    }
+
+    .pregledglavno .prikaznarocil h1
+    {
+        font-size: 5.5em;
+    }
+
+    .pregledglavno .prikaznarocil
+    {
+        max-height: 40em;
+    }
+}
+
+/* Pravno */
+
+.pravnovsebina
+{
+    max-width: 80%;
+    margin-right: auto;
+    margin-left: auto;
+    padding: 2em;
+    border-radius: 0.5em;
+    box-shadow: 0 0.5em 1em rgba(0, 0, 0, 0.2);
+    margin-top: 7em;
+    margin-bottom: 5em;
+}
+
+.pravnovsebina h1
+{
+    font-family: Poppins-Bold;
+    color: #9b9b2d;
+    font-size: 3em;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    padding-bottom: 0.3em;
+}
+
+.pravnovsebina h2
+{
+    color: #DBBB92;
+    font-size: 1.8em;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    border-bottom: 0.1em solid #ccc;
+    padding-bottom: 0.3em;
+}
+
+.pravnovsebina p
+{
+    margin-bottom: 1.5em;
+    font-size: 1.3em;
+}
+
+.pravnovsebina ul
+{
+    padding-left: 1.5em;
+    margin-bottom: 1em;
+}
+
+.pravnovsebina li
+{
+    margin-bottom: 0.5em;
+    font-size: 1.25em;
+}
+
+.pravnovsebina a
+{
+    color: #9b9b2d;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.pravnovsebina a:hover
+{
+    text-decoration: underline;
+}
+
+.pravnovsebina strong
+{
+    color: #444;
+}
+
+@media screen and (max-width: 480px)
+{
+
+    .pravnovsebina
+    {
+        padding: 5em;
+    }
+
+    .pravnovsebina h1
+    {
+        font-size: 10em;
+    }
+
+    .pravnovsebina h2
+    {
+        font-size: 7em;
+    }
+
+    .pravnovsebina p
+    {
+        font-size: 5em;
+    }
+
+    .pravnovsebina li
+    {
+        font-size: 4em;
+    }
 }
