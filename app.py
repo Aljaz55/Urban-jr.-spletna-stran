@@ -8,6 +8,7 @@ import os
 import html
 from datetime import datetime 
 import json
+import traceback
 
 # databaza
 from tinydb import TinyDB, Query
@@ -32,9 +33,6 @@ from dotenv import load_dotenv
 
 #pip install flask --user
 #pip install tinydb
-#pip install dotenv
-#pip install tinydb
-#pip install flask_mail
 # -- pa seveda se kaj drugega :) --
 
 # Load environment variables first
@@ -44,12 +42,12 @@ app = Flask(__name__)
 
 
 # ---------- Pridobitev podatkov iz .env ----------
-app.secret_key = os.environ['SECRET_KEY'] 
-MAIL_SERVER=os.getenv('MAIL_SERVER'),
-MAIL_PORT=int(os.getenv('MAIL_PORT')),
-MAIL_USE_TLS=os.getenv('MAIL_USE_TLS', 'True').lower() == 'true',
-MAIL_USERNAME=os.getenv('MAIL_USERNAME'),
-MAIL_PASSWORD=os.getenv('MAIL_PASSWORD')
+app.secret_key = os.getenv('SECRET_KEY', 'your_fallback_secret_key_here')
+MAIL_SERVER = os.getenv('MAIL_SERVER', 'smtp.gmail.com')
+MAIL_PORT = int(os.getenv('MAIL_PORT', 587))
+MAIL_USE_TLS = os.getenv('MAIL_USE_TLS', 'True').lower() == 'true'
+MAIL_USERNAME = os.getenv('MAIL_USERNAME', 'jure.pintar9@gmail.com')
+MAIL_PASSWORD = os.getenv('MAIL_PASSWORD', 'wnia dkdk zpby hotv')
 
 #  ---------- Zagon potreben za pošiljanje mail ----------
 mail = Mail(app)
@@ -71,9 +69,6 @@ def initialize_admin_mode():
     if 'admin_mode' not in session:
         session['admin_mode'] = False
         session['last_log_link'] = "/"
-
-# ---------- Databaze ----------
-narocnikiDB = TinyDB('db.json')
 
 # ---------- Linki (poti) do html datotek ----------
 @app.route("/")
@@ -118,13 +113,18 @@ def pomoc():
     admin_mode = session.get('admin_mode', False)
     return render_template("pomoc.html",admin_mode=admin_mode)
 
+@app.route("/pravno")
+def pravno():
+    admin_mode = session.get('admin_mode', False)
+    return render_template("pravno.html",admin_mode=admin_mode)
+
 # ---------- Prijava v admin ----------
 
 userDict = {}
 passwordDict = {}
 
-AdminName = app.secret_key = os.environ['ADMIN_NAME'] 
-AdminPassword = app.secret_key = os.environ['ADMIN_PASSWORD']
+AdminName = os.getenv('ADMIN_NAME', 'admin')
+AdminPassword = os.getenv('ADMIN_PASSWORD', 'securepassword')
 
 userDict[AdminName] = 1
 passwordDict[AdminPassword] = 1
@@ -155,6 +155,7 @@ def goBack():
     return jsonify({"redirect_to": session['last_log_link']})  
 
 # ---------- Dodajanje e-mail racuna v databazo TinyDB (za novice) ----------
+narocnikiDB = TinyDB('naročniki.json')
 
 @app.route("/poskusDodajanjaMail", methods=["POST"])
 def poskusDodajanjaMail():
@@ -215,6 +216,9 @@ izdelek_podatki = {
             <div class="opiskoliko">
                 <p>V vsakem paketu je 10 jajc</p>
             </div>
+            <div class="cena">
+                <p>3.5 €</p>
+            </div>
         </div>
         '''
     },
@@ -229,7 +233,10 @@ izdelek_podatki = {
                 <img src="/static/images/trgovina/DSC07979-21.JPG" alt="Piščanci">
             </div>
             <div class="opiskoliko">
-                <p>V vsakem paketu je 10 jajc</p>
+                <p>V vsakem paketu je 1 piščanec</p>
+            </div>
+            <div class="cena">
+                <p>14 €</p>
             </div>
         </div>
         '''
@@ -245,7 +252,10 @@ izdelek_podatki = {
                 <img src="/static/images/trgovina/DSC08006-26.JPG" alt="Mleko">
             </div>
             <div class="opiskoliko">
-                <p>V vsakem paketu je 10 jajc</p>
+                <p>V vsakem paketu je 1 liter mleka</p>
+            </div>
+            <div class="cena">
+                <p>2 €</p>
             </div>
         </div>
         '''
@@ -261,7 +271,10 @@ izdelek_podatki = {
                 <img src="/static/images/trgovina/DSC07972-20.JPG" alt="Zelenjava">
             </div>
             <div class="opiskoliko">
-                <p>V vsakem paketu je 10 jajc</p>
+                <p>Paket mešane zelenjave</p>
+            </div>
+            <div class="cena">
+                <p>5 €</p>
             </div>
         </div>
         '''
@@ -277,7 +290,10 @@ izdelek_podatki = {
                 <img src="/static/images/trgovina/DSC07979-21.JPG" alt="Govedina">
             </div>
             <div class="opiskoliko">
-                <p>V vsakem paketu je 10 jajc</p>
+                <p>V vsakem paketu je 0.5 kg govedine</p>
+            </div>
+            <div class="cena">
+                <p>20 €</p>
             </div>
         </div>
         '''
@@ -343,12 +359,27 @@ def znizaj(izdelek):
     session["kosarica"] = kosarica
     return redirect(url_for("kosarica"))
 
-# Za naročila v bazo
+def izracunaj_skupno_ceno(kosarica_ses):
+    skupna = 0.0
+    for ime, kolicina in kosarica_ses.items():
+        podatki = izdelek_podatki.get(ime.upper())
+        if podatki:
+            html = podatki["html"]
+            # Poišči prvo ceno v HTML
+            match = re.search(r'(\d+(?:\.\d+)?)\s*€', html)
+            if match:
+                cena = float(match.group(1))
+                skupna += cena * kolicina
+    return round(skupna, 2)
 
-db_narocila = TinyDB("naročila.json")
+
 
 # ---------- Za pošiljanje e-maila ob nakupu ----------
-def html_narocilo(ime,priimek,telefonska,sender_email,kraj,hisna_stevilka,postna_stevilka,nacin_dostave,izdelki,datum):
+import html
+
+def html_narocilo(ime, priimek, telefonska, sender_email, kraj, hisna_stevilka, postna_stevilka, nacin_dostave, izdelki, datum, skupna_cena):
+    # Pretvorba izdelkov, da se uporabi HTML escape in nadomesti \n z <br>
+    izdelki_html = html.escape(izdelki).replace('\n', '<br>')
 
     html_narocilo = f"""
     <!DOCTYPE html>
@@ -357,7 +388,6 @@ def html_narocilo(ime,priimek,telefonska,sender_email,kraj,hisna_stevilka,postna
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <style>
             body {{
-
                 font-family: 'Arial', sans-serif;
                 line-height: 0.7;
                 color: #333;
@@ -387,25 +417,24 @@ def html_narocilo(ime,priimek,telefonska,sender_email,kraj,hisna_stevilka,postna
                 color: #DBBB92;
                 font-size: 0.9em;
                 margin-left: 0.5em;
-                
             }}
-            table{{
-                width:90%;
-                margin:auto;
+            table {{
+                width: 90%;
+                margin: auto;
             }}
-            .prostor{{
-                width:45%;
+            .prostor {{
+                width: 45%;
             }}
-            .presledek{{
-                width:10%;
+            .presledek {{
+                width: 10%;
             }}
-            .imemail{{
+            .imemail {{
                 border-radius: 1em;
                 background-color: white;
                 border: 0.3em solid #DBBB92;
-                width: 100%;   
+                width: 100%;
             }}
-            .izdelki{{
+            .izdelki {{
                 font-size: 1.3em;
                 margin: 0.8em;
                 color: #DBBB92;
@@ -414,16 +443,14 @@ def html_narocilo(ime,priimek,telefonska,sender_email,kraj,hisna_stevilka,postna
                 font-family: sans-serif;
                 font-size: 1.6em;
                 color: #B4B436;
-
             }}
-            .footer{{
-                width:100%;
+            .footer {{
+                width: 100%;
                 text-align: center;
                 font-size: 0.9em;
             }}
-            .pomemben_text{{
+            .pomemben_text {{
                 font-size: 2.8em;
-
             }}
         </style>
     </head>
@@ -433,79 +460,108 @@ def html_narocilo(ime,priimek,telefonska,sender_email,kraj,hisna_stevilka,postna
         </div>
         <div class="content">
             <table>
-            <tr><td ><p><strong>Ime:</strong></p></td>
-            <td>&nbsp;&nbsp;</td>
-            <td ><p><strong>Priimek:</strong></p></td></tr>
-            <tr>
-                <td class="prostor">
-                    <div class="imemail">
-                        <p>{html.escape(ime)}</p>
-                    </div><br>
-                </td>
-                <td>&nbsp;&nbsp;</td>
-                <td class="prostor">
-                    <div class="imemail">
-                        <p>{html.escape(priimek)}</p>
-                    </div><br>
-                </td>
-            </tr>
-            <tr><td ><p><strong>Telefonska številka:</strong></p></td>
-            <td>&nbsp;&nbsp;</td>
-            <td ><p><strong>e-mail:</strong></p></td></tr>
-            <tr>
-                <td>
-                    <div class="imemail">
-                        <p>{html.escape(telefonska)}</p>
-                    </div><br>
-                </td>
-                <td class="presledek">&nbsp;&nbsp;</td>
-                <td>
-                    <div class="imemail">
-                        <p>{html.escape(sender_email)}</p>
-                    </div><br>
-                </td>
-            </tr>
-            <tr><td><p><strong>Kraj:</strong></p></td>
-            <td>&nbsp;&nbsp;</td>
-            <td><p><strong>Hišna številka:</strong></p></td></tr>
-            <tr>
-                <td>
-                    <div class="imemail">
-                        <p>{html.escape(kraj)}</p>
-                    </div><br>
-                </td>
-                <td>&nbsp;&nbsp;</td>
-                <td>
-                    <div class="imemail">
-                        <p>{html.escape(hisna_stevilka)}</p>
-                    </div><br>
-                </td>
-            </tr>
-            <tr><td><p><strong>Poštna številka:</strong></p></td>
-            <td>&nbsp;&nbsp;</td>
-            <td><p><strong>Način dostave:</strong></p></td></tr>
-            <tr>
-                <td>
-                    <div class="imemail">
-                        <p>{html.escape(postna_stevilka)}</p>
-                    </div><br>
-                </td>
-                <td>&nbsp;&nbsp;</td>
-                <td>
-                    <div class="imemail">
-                        <p>{html.escape(nacin_dostave)}</p>
-                    </div><br>
-                </td>
-            </tr>
-            <br>
-            <tr>
-             <td colspan="3">
-                <p><strong class="pomemben_text">Naročeni izdelki:</strong></p>
-                <div class="imemail">
-                        <div class="izdelki">{html.escape(izdelki).replace('\n', '<br>')}</div>
-                </div><br>
-             </td>
-            </tr>
+                <tr>
+                    <td><p><strong>Ime:</strong></p></td>
+                    <td>&nbsp;&nbsp;</td>
+                    <td><p><strong>Priimek:</strong></p></td>
+                </tr>
+                <tr>
+                    <td class="prostor">
+                        <div class="imemail">
+                            <p>{html.escape(ime)}</p>
+                        </div><br>
+                    </td>
+                    <td>&nbsp;&nbsp;</td>
+                    <td class="prostor">
+                        <div class="imemail">
+                            <p>{html.escape(priimek)}</p>
+                        </div><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td><p><strong>Telefonska številka:</strong></p></td>
+                    <td>&nbsp;&nbsp;</td>
+                    <td><p><strong>e-mail:</strong></p></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="imemail">
+                            <p>{html.escape(telefonska)}</p>
+                        </div><br>
+                    </td>
+                    <td class="presledek">&nbsp;&nbsp;</td>
+                    <td>
+                        <div class="imemail">
+                            <p>{html.escape(sender_email)}</p>
+                        </div><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td><p><strong>Kraj:</strong></p></td>
+                    <td>&nbsp;&nbsp;</td>
+                    <td><p><strong>Hišna številka:</strong></p></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="imemail">
+                            <p>{html.escape(kraj)}</p>
+                        </div><br>
+                    </td>
+                    <td>&nbsp;&nbsp;</td>
+                    <td>
+                        <div class="imemail">
+                            <p>{html.escape(hisna_stevilka)}</p>
+                        </div><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td><p><strong>Poštna številka:</strong></p></td>
+                    <td>&nbsp;&nbsp;</td>
+                    <td><p><strong>Način dostave:</strong></p></td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="imemail">
+                            <p>{html.escape(postna_stevilka)}</p>
+                        </div><br>
+                    </td>
+                    <td>&nbsp;&nbsp;</td>
+                    <td>
+                        <div class="imemail">
+                            <p>{html.escape(nacin_dostave)}</p>
+                        </div><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <p><strong class="pomemben_text">Naročeni izdelki:</strong></p>
+                        <div class="imemail">
+                            <div class="izdelki">{izdelki_html}</div>
+                        </div><br>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p><strong>Datum:</strong></p>
+                    </td>
+                    <td>&nbsp;&nbsp;</td>
+                    <td>
+                        <p><strong>Skupna cena:</strong></p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="imemail">
+                        <p>{html.escape(datum)}</p>
+                        </div><br>
+                    </td>
+                    <td>&nbsp;&nbsp;</td>
+                    <td>
+                        <div class="imemail">
+                            <div class="izdelki">{html.escape(str(skupna_cena))} €</div>
+                        </div><br>
+                    </td>
+                </tr>
             </table>  
         </div>
         <div class="footer">
@@ -515,6 +571,7 @@ def html_narocilo(ime,priimek,telefonska,sender_email,kraj,hisna_stevilka,postna
     </html>
     """
     return html_narocilo
+
 
 def narocilo_poslji_mail(narocilo):
     try:
@@ -563,7 +620,8 @@ def narocilo_poslji_mail(narocilo):
             safe_content(data['telefonska']), safe_content(data['eposta']),
             safe_content(data['kraj']), safe_content(data['hisna_stevilka']),
             safe_content(data['postna_stevilka']), safe_content(data['nacin_dostave']),
-            safe_content(strIzdelkov), safe_content(data['datum'])
+            safe_content(strIzdelkov), safe_content(data['datum']),
+            safe_content(data['skupna_cena'])
         )
         # navadni text
         narocilo_text_content = f"""Naročilo:
@@ -576,7 +634,8 @@ Hišna številka: {data['hisna_stevilka']}
 Poštna številka: {data['postna_stevilka']}
 Način dostave: {data['nacin_dostave']}
 Izdelki: {data['izdelki']}
-Datum: {data['datum']}"""
+Datum: {data['datum']}
+Skupna cena: {data['skupna_cena']} €"""
 
         # poti MIME za email
         part1 = MIMEText(narocilo_text_content, 'plain', 'utf-8')
@@ -604,53 +663,12 @@ Datum: {data['datum']}"""
         flash(error_msg, 'danger')
         print(f"Error details: {repr(e)}")
 
-# ---------- funkcija za oddajo naročila v košarici ----------
-@app.route("/oddaj_narocilo", methods=["POST"])
-def oddaj_narocilo():
-    admin_mode = session.get('admin_mode', False)
-    session["zaloga"] = pridobi_zalogo()
-    zahtevani_podatki = ["ime", "priimek", "telefonska", "e-pošta", "kraj", "hisnastevilka", "poštnaštevilka", "nacindostave"]
-    manjkajoci = [p for p in zahtevani_podatki if not request.form.get(p)]
-    if manjkajoci:
-        return redirect(url_for("kosarica"))
-
-    kosarica = session.get("kosarica", {})
-    zaloga = session.get("zaloga", {})
-
-    # Shrani naročilo v bazo
-    narocilo = {
-        "ime": request.form["ime"],
-        "priimek": request.form["priimek"],
-        "telefonska": request.form["telefonska"],
-        "eposta": request.form["e-pošta"],
-        "kraj": request.form["kraj"],
-        "hisna_stevilka": request.form["hisnastevilka"],
-        "postna_stevilka": request.form["poštnaštevilka"],
-        "nacin_dostave": request.form["nacindostave"],
-        "izdelki": kosarica,
-        "datum": datetime.now().strftime("%d.%m.%Y ob %H:%M")
-    }
-
-    db_narocila.insert(narocilo)
-    narocilo_poslji_mail(narocilo)
-
-    # Posodobi zalogo
-    for izdelek, kolicina in kosarica.items():
-        obstojece = zalogaDB.get(ZalogaQuery.izdelek == izdelek)
-        if obstojece:
-            nova_kolicina = max(0, obstojece["kolicina"] - kolicina)
-            zalogaDB.update({"kolicina": nova_kolicina}, ZalogaQuery.izdelek == izdelek)
-
-    session["zaloga"] = zaloga
-    session["kosarica"] = {}
-
-    return render_template("hvala.html", admin_mode=admin_mode)
-
 # ---------- Kosarica ----------
 @app.route("/kosarica")
 def kosarica():
     kosarica_ses = session.get("kosarica", {})
     admin_mode = session.get('admin_mode', False)
+    skupna_cena = izracunaj_skupno_ceno(kosarica_ses)
     trenutna_zaloga = pridobi_zalogo()  # <-- Ključno
 
     izbrani = []
@@ -690,35 +708,90 @@ def kosarica():
 
             neizbrani.append(html_zamenjan)
 
-    return render_template("kosarica.html", izbrani=izbrani, neizbrani=neizbrani, admin_mode=admin_mode, zaloga=trenutna_zaloga)
+    return render_template("kosarica.html", izbrani=izbrani, neizbrani=neizbrani, admin_mode=admin_mode, zaloga=trenutna_zaloga, skupna_cena=skupna_cena)
+
+# ---------- funkcija za oddajo naročila v košarici ----------
+@app.route("/oddaj_narocilo", methods=["POST"])
+def oddaj_narocilo():
+    admin_mode = session.get('admin_mode', False)
+    session["zaloga"] = pridobi_zalogo()
+    zahtevani_podatki = ["ime", "priimek", "telefonska", "e-pošta", "kraj", "hisnastevilka", "poštnaštevilka", "nacindostave"]
+    manjkajoci = [p for p in zahtevani_podatki if not request.form.get(p)]
+    if manjkajoci:
+        return redirect(url_for("kosarica"))
+
+    kosarica = session.get("kosarica", {})
+    skupna_cena = izracunaj_skupno_ceno(kosarica)
+    zaloga = session.get("zaloga", {})
+
+    # Shrani naročilo v bazo
+    narocilo = {
+        "ime": request.form["ime"],
+        "priimek": request.form["priimek"],
+        "telefonska": request.form["telefonska"],
+        "eposta": request.form["e-pošta"],
+        "kraj": request.form["kraj"],
+        "hisna_stevilka": request.form["hisnastevilka"],
+        "postna_stevilka": request.form["poštnaštevilka"],
+        "nacin_dostave": request.form["nacindostave"],
+        "izdelki": kosarica,
+        "datum": datetime.now().strftime("%d.%m.%Y ob %H:%M"),
+        "skupna_cena": skupna_cena
+    }
+
+    db_narocila.insert(narocilo)
+    narocilo_poslji_mail(narocilo)
+
+    # Posodobi zalogo
+    for izdelek, kolicina in kosarica.items():
+        obstojece = zalogaDB.get(ZalogaQuery.izdelek == izdelek)
+        if obstojece:
+            nova_kolicina = max(0, obstojece["kolicina"] - kolicina)
+            zalogaDB.update({"kolicina": nova_kolicina}, ZalogaQuery.izdelek == izdelek)
+
+    session["zaloga"] = zaloga
+    session["kosarica"] = {}
+
+    return render_template("hvala.html", admin_mode=admin_mode, skupna_cena=skupna_cena)
+
 
 # ---------- Delovanje pregled zaloge ----------
 
 zalogaDB = TinyDB("zaloga.json")
 ZalogaQuery = Query()
+# Za naročila v bazo
+
+db_narocila = TinyDB("naročila.json")
 
 @app.route("/pregled")
 def pregled():
-    narocila = db_narocila.all()
+    if not session.get('admin_mode', False):
+        return redirect("/")
+    try:
+        narocila = db_narocila.all()
 
-    narocniki_text = ""
-    for entry in narocnikiDB.all():
-        narocniki_text += entry['mail'] +","
-    narocniki_text = narocniki_text[:-1]
+        narocniki_text = ""
+        for entry in narocnikiDB.all():
+            narocniki_text += entry['mail'] +","
+        narocniki_text = narocniki_text[:-1]
 
-    def parse_datum(n):
-        try:
-            return datetime.strptime(n["datum"], "%d.%m.%Y ob %H:%M")
-        except:
-            return datetime.min  # če je kaj narobe z datumom
+        def parse_datum(n):
+            try:
+                return datetime.strptime(n["datum"], "%d.%m.%Y ob %H:%M")
+            except:
+                return datetime.min  # če je kaj narobe z datumom
 
-    narocila = sorted(narocila, key=parse_datum, reverse=True)
+        narocila = sorted(narocila, key=parse_datum, reverse=True)
 
-    narocila = narocila[:30]
-    maili = narocnikiDB.all()
-    zaloga = pridobi_zalogo()
-    admin_mode = session.get('admin_mode', False)
-    return render_template("pregled.html", narocila=narocila, zaloga=zaloga, maili=maili, narocniki_text=narocniki_text,admin_mode=admin_mode)
+        narocila = narocila[:30]
+        maili = narocnikiDB.all()
+        zaloga = pridobi_zalogo()
+        admin_mode = session.get('admin_mode', False)
+        return render_template("pregled.html", narocila=narocila, zaloga=zaloga, maili=maili, narocniki_text=narocniki_text,admin_mode=admin_mode)
+    except Exception as e:
+        print("Napaka v /pregled:", e)
+        traceback.print_exc()
+        return "Napaka na strežniku", 500
 
 @app.route("/nastavi_zalogo", methods=["POST"])
 def nastavi_zalogo():
@@ -736,7 +809,13 @@ def pridobi_zalogo():
 
 # ---------- Kontakt pošiljanje na mail ----------
 
+
 def html_kontakt(name, sender_email, message): 
+    # Escapiranje podatkov in obdelava nove vrstice v sporočilu
+    escaped_name = html.escape(name)
+    escaped_sender_email = html.escape(sender_email)
+    escaped_message = html.escape(message).replace("\n", "<br>")  # Pretvori nove vrstice v <br> za HTML
+
     html_content = f"""
     <!DOCTYPE html>
     <html>
@@ -769,7 +848,7 @@ def html_kontakt(name, sender_email, message):
                 border: 0.15em solid #ddd;
                 margin-top: 1em;
                 border-radius: 2em;
-                width: 85%
+                width: 85%;
             }}
             .content p {{
                 line-height: 1.2;
@@ -792,20 +871,19 @@ def html_kontakt(name, sender_email, message):
                 white-space: pre-wrap;
                 word-wrap: break-word;
             }}
-            .imemail{{
+            .imemail {{
                 border-radius: 1em;
                 background-color: white;
                 border: 0.3em solid #DBBB92;
                 width: 30%;
                 min-width:20em;
-                
             }}
             strong {{
                 font-family: sans-serif;
                 font-size: 1.7em;
                 color: #B4B436;
             }}
-            .footer{{
+            .footer {{
                 width:100%;
                 text-align: center;
                 font-size: 0.9em;
@@ -819,15 +897,15 @@ def html_kontakt(name, sender_email, message):
         <div class="content">
             <p><strong>Ime:</strong></p>
             <div class="imemail">
-            <p>{html.escape(name)}</p>
+                <p>{escaped_name}</p>
             </div><br>
             <p><strong>e-mail:</strong></p>
             <div class="imemail">
-                <p>{html.escape(sender_email)}</p>
+                <p>{escaped_sender_email}</p>
             </div><br>
             <p><strong>Vprašanje:</strong></p>
             <div class="message">
-                {"\n"+message}
+                {escaped_message}
             </div>
         </div>
         <div class="footer">
@@ -921,6 +999,6 @@ Sporočilo:
 
 
 
-app.run(debug = True, port=5000)
+app.run(debug = True, port=8800)
 
 
