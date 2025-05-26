@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
     <link rel="icon" href="static/images/skupne/Logo/Znak__URBAN JR_zelen.ico" type="image/x-icon">
-    <title>Urban JR. - O nas</title>
+    <title>Urban JR. - Blog</title>
 </head>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <style>
@@ -33,169 +33,162 @@
         font-family: Amatic;
         src: url("{{ url_for('static', filename='fonts/amatic-bold.ttf') }}");
     }
-
-    .ozadjekosarica
+    .ozadjeblog
     {
         background-image: url("{{ url_for('static', filename='images/onas/DSC08268-57.JPG') }}");
     }
-
 </style>
 <body>
-    <header>
-        <div class="logo">
-            <a href=""><img src="../static/images/skupne/Logo/1Logo__URBAN JR_horizontalen.png" alt="Logo"></a>
-        </div>
-        <div class="portelpok">
-            <li class="telpokazi">
-                <a href="/kosarica">
-                <i class="fa-solid fa-cart-arrow-down"></i>
-                {% if st_izdelkov > 0 %}
-                <span class="kosaricastevec">{{ st_izdelkov }}</span>
-                {% endif %}
-                </a>
-            </li>
 
-            <div class="menutelefon" onclick="toggleMenu()">
-                <div class="crtica"></div>
-                <div class="crtica"></div>
-                <div class="crtica"></div>
-            </div>
-        </div>
+    <div class="zacetnastranostali">
+        <div class="ozadjeblog">
+            <div class="temnoostali">
+                <header>
+                    <div class="logo">
+                        <a href=""><img src="../static/images/skupne/Logo/1Logo__URBAN JR_horizontalen.png" alt="Logo"></a>
+                    </div>
+                    <div class="portelpok">
+                        <li class="telpokazi">
+                            <a href="/kosarica">
+                            <i class="fa-solid fa-cart-arrow-down"></i>
+                            {% if st_izdelkov > 0 %}
+                            <span class="kosaricastevec">{{ st_izdelkov }}</span>
+                            {% endif %}
+                            </a>
+                        </li>
     
-        <nav class="navmenu" id="navmenu">
-            <ul>
-                <li><a href="/">Domov</a></li>
-                <li><a href="/onas">O nas</a></li>
-                <li><a href="/trgovina">Trgovina</a></li>
-                <li><a href="/blog">Blog</a></li>
-                <li><a href="/kontakt">Kontakt</a></li>
-                <li id="lipregled" style="display:none;"><a href="/pregled">Pregled</a></li>
-                <li class="racpokazi">
-                    <a href="/kosarica">
-                    <i class="fa-solid fa-cart-arrow-down"></i>
-                    {% if st_izdelkov > 0 %}
-                    <span class="kosaricastevec">{{ st_izdelkov }}</span>
-                    {% endif %}
-                    </a>
-                </li>
-                <div class="search" id="search">
-                    <input type="text" placeholder="Poiščite na strani..." id="search-input">
-                    <button class="gumbmic" id="micButton"><i class="fa-solid fa-microphone"></i></button>
-                    <button class="gumbsearch" id="gumbsearch" onclick="SearchClick()"><i class="fa-solid fa-magnifying-glass"></i></button>
-                </div>
-            </ul>
-        </nav>
-        <div class="search-results" id="search-results"></div>
-    </header>
-
-    <form id="myForm" action="/oddaj_narocilo" method="POST" class="narocila">
-        <div class="narocilo">
-            <div class="nacindostave">
-                <label>
-                    <input type="radio" name="nacindostave" value="osebni" required/>
-                    <div class="osebni prevzem">
-                        <i class="fa-solid fa-building"></i>
-                        <h2>Osebni prevzem</h2>
-                        <p>Strošek dostave:</p>
-                        <p>0,00 €</p>
-                    </div>
-                </label>
-                <label>
-                    <input type="radio" name="nacindostave" value="dostava" required/>
-                    <div class="dostava prevzem">
-                        <i class="fa-solid fa-truck"></i>
-                        <h2>Dostava na dom</h2>
-                        <p>Strošek dostave:</p>
-                        <p>3,99 €</p>
-                    </div>
-                </label>
-            </div>
-            <div class="prikazizdelkov">
-                {% if izbrani %}
-                <h1>VAŠA KOŠARICA</h1>
-                <div class="prikazizdelkovgrid">
-                    {% for izdelek in izbrani %}
-                        <div class="prvastranizdelek">
-                            <div class="vsebinaizdelek">
-                                <div class="slikeizdelek">
-                                    {{ izdelek | safe }}
-                                </div>
-                            </div>
+                        <div class="menutelefon" onclick="toggleMenu()">
+                            <div class="crtica"></div>
+                            <div class="crtica"></div>
+                            <div class="crtica"></div>
                         </div>
-                    {% endfor %}
-                </div>
-                {% if skupna_cena %}
-                    <div class="skupnacena">
-                        <h2>Skupna cena: {{ skupna_cena }} €</h2>
                     </div>
-                {% endif %}
-                <div class="gp">
-                    <button type="submit">ODDAJ NAROČILO</button>
-                    <a href="/pomoc" target="_blank">Potrebuje pomoč pri oddaji naročila?</a>
-                </div>
-                {% else %}
-                    <h1>KOŠARICA JE PRAZNA</h1>
-                    <style>
-                        .narocila
-                        {
-                            margin-top: 7em;
-                            gap: 15em;
-                            justify-content: center;
-                        }
-                        @media screen and (max-width: 480px)
-                        {
-                            .narocila
-                            {
-                                margin-top: 45em;
-                            }
-                        }
-                    </style>
-                {% endif %}
-            </div>
-        </div>
-
-        <div class="glavnidelform">
-            <h1>VNESITE KONTAKTNE PODATKE</h1>
-            <div class="vsebinaform">
-                <input type="text" name="ime" placeholder="Ime" required autofocus>
-                <input type="text" name="priimek" placeholder="Priimek" required>
-                <input type="tel" name="telefonska" placeholder="Telefonska številka" pattern="^[0-9]{9}$" maxlength="9" required>
-                <input type="email" name="e-pošta" placeholder="E-poštni naslov" pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$" required>
-                <input type="text" name="kraj" placeholder="Kraj" required>
-                <input type="text" name="hisnastevilka" placeholder="Hišna številka" required>
-                <input type="text" name="poštnaštevilka" placeholder="Poštna številka" pattern="[0-9]{4}" required>
-            </div>
-
-            <input type="hidden" name="nacin_dostave" id="nacin_dostave" value="OSEBNI_PREVZEM">
-            <div class="telgumbnarocilo">
-                {% if izbrani %}
-                <button type="submit" id="buttonTelsubmit">ODDAJ NAROČILO</button>
-                {% else %}
-                <button type="button" id="buttonTelsubmit" style="display: none;">ODDAJ NAROČILO</button>
-                {% endif %}
-                <a href="/pomoc">Potrebuje pomoč pri oddaji naročila?</a>
-            </div>        
-
-            {% if neizbrani %}
-            <h1>DODAJTE VEČ IZDELKOV</h1>
-            <div class="vecizdelkov">
-                <div class="prikazizdelkov">
-                    <div class="prikazizdelkovgrid">
-                        {% for izdelek in neizbrani %}
-                            <div class="prvastranizdelek">
-                                <div class="vsebinaizdelek">
-                                    <div class="slikeizdelek">
-                                        {{ izdelek | safe }}
-                                    </div>
-                                </div>
+                
+                    <nav class="navmenu" id="navmenu">
+                        <ul>
+                            <li><a href="/">Domov</a></li>
+                            <li><a href="/onas">O nas</a></li>
+                            <li><a href="/trgovina">Trgovina</a></li>
+                            <li><a href="/blog">Blog</a></li>
+                            <li><a href="/kontakt">Kontakt</a></li>
+                            <li id="lipregled" style="display:none;"><a href="/pregled">Pregled</a></li>
+                            <li class="racpokazi">
+                                <a href="/kosarica">
+                                <i class="fa-solid fa-cart-arrow-down"></i>
+                                {% if st_izdelkov > 0 %}
+                                <span class="kosaricastevec">{{ st_izdelkov }}</span>
+                                {% endif %}
+                                </a>
+                            </li>
+                            <div class="search" id="search">
+                                <input type="text" placeholder="Poiščite na strani..." id="search-input">
+                                <button class="gumbmic" id="micButton"><i class="fa-solid fa-microphone"></i></button>
+                                <button class="gumbsearch" id="gumbsearch" onclick="SearchClick()"><i class="fa-solid fa-magnifying-glass"></i></button>
                             </div>
-                        {% endfor %}
-                    </div>
-                    {% endif %}
+                        </ul>
+                    </nav>
+                    <div class="search-results" id="search-results"></div>
+                </header>           
+
+                <div class="nadozadjemostali">
+                    <h1>PRAVNI PODATKI</h1>
+                    <p>Tukaj najdete vse pravne podrobnosti in pogoje poslovanja z nami</p>
                 </div>
             </div>
         </div>
-    </form>
+    </div>
+
+    <div class="pravnovsebina">
+        <div class="kopo" id="kopo">
+            <h1>PODJETJE IN KONTAKTNI PODATKI</h1>
+            <p><strong>Ime podjetja:</strong> URBAN JR</p>
+            <p><strong>Nosilec dopolnilne dejavnosti:</strong> GORAZD JELENC</p>
+            <p><strong>Naslov:</strong> Dražgoše 18, 4228 Železniki, Slovenija</p>
+            <p><strong>Davčna številka:</strong> SI12345678</p>
+            <p><strong>Matična številka:</strong> 87654321</p>
+            <p><strong>Telefon:</strong> 031 344 457</p>
+            <p><strong>E-pošta:</strong> urbanjr.drazgose@gmail.com</p>
+            <p><strong>Spletna stran:</strong> <a href="https://www.urbanjr.si">www.urbanjr.si</a></p>
+        </div>
+        <div class="poza" id="poza">
+            <h1>POLITIKA ZASEBNOSTI</h1>
+            <p>Podjetje URBAN JR (nosilec GORAZD JELENC), spoštuje vašo zasebnost in se zavezuje k varovanju osebnih podatkov skladno z Uredbo (EU) 2016/679 (GDPR) in Zakonom o varstvu osebnih podatkov (ZVOP-2).</p>
+
+            <h2>1. Upravljavec podatkov</h2>
+            <p>Upravljavec osebnih podatkov je GORAZD JELENC, Dražgoše 18, 4228 Železniki. Kontakt: urbanjr.drazgose@gmail.com</p>
+
+            <h2>2. Namen zbiranja podatkov</h2>
+            <ul>
+                <li>Obdelava in dostava spletnih naročil</li>
+                <li>Komunikacija z uporabniki in odgovori na povpraševanja</li>
+                <li>Pošiljanje obvestil, ponudb in novic (ob soglasju)</li>
+                <li>Analitika spletne strani in optimizacija uporabniške izkušnje</li>
+            </ul>
+
+            <h2>3. Kateri podatki se zbirajo?</h2>
+            <ul>
+                <li>Ime in priimek</li>
+                <li>Naslov (za dostavo in račun)</li>
+                <li>Elektronski naslov</li>
+                <li>Telefonska številka</li>
+                <li>Podatki o naročilih in plačilih</li>
+            </ul>
+
+            <h2>4. Pravna podlaga za obdelavo</h2>
+            <p>Vaše podatke zbiramo na podlagi pogodbenega razmerja (naročilo), zakonitega interesa (statistika, varnost) ali vašega izrecnega soglasja (npr. e-novice).</p>
+
+            <h2>5. Hramba podatkov</h2>
+            <p>Podatki se hranijo največ 5 let po izpolnitvi naročila, oziroma dlje, če tako določa zakon (npr. računovodski predpisi).</p>
+
+            <h2>6. Vaše pravice</h2>
+            <ul>
+                <li>Dostop do podatkov</li>
+                <li>Popravek netočnih podatkov</li>
+                <li>Izbris (če ni pravne ovire)</li>
+                <li>Omejitev obdelave</li>
+                <li>Ugovor obdelavi</li>
+                <li>Prenosljivost podatkov</li>
+            </ul>
+
+            <h2>7. Piškotki</h2>
+            <p>Spletna stran uporablja osnovne piškotke za delovanje strani in analitične piškotke Google Analytics (anonimizirano).</p>
+
+            <h2>8. Posredovanje tretjim osebam</h2>
+            <p>Vaši podatki se ne posredujejo tretjim osebam, razen če to zahteva izvedba storitve (npr. Pošta Slovenije za dostavo) ali zakon.</p>
+        </div>
+
+        <div class="popo" id="popo">
+            <h1>POGOJI POSLOVANJA</h1>
+            <p>Spletna trgovina URBAN JR deluje skladno z zakonodajo RS in EU ter omogoča varen in pregleden nakup izdelkov iz domače kmetije.</p>
+
+            <h2>1. Naročilo in pogodba</h2>
+            <p>Naročilo je sklenjeno, ko kupec prejme potrditveno e-pošto. Ponudnik si pridržuje pravico do zavrnitve naročila iz utemeljenih razlogov.</p>
+
+            <h2>2. Cene</h2>
+            <p>Vse cene so v evrih (EUR) in vključujejo DDV. Cene veljajo ob potrditvi naročila.</p>
+
+            <h2>3. Načini plačila</h2>
+            <ul>
+                <li>Po predračunu (nakazilo na TRR)</li>
+                <li>Ob prevzemu (po povzetju)</li>
+            </ul>
+
+            <h2>4. Dostava</h2>
+            <p>Izdelke pošiljamo prek Pošte Slovenije ali z osebnim prevzemom. Stroški dostave so navedeni ob oddaji naročila.</p>
+
+            <h2>5. Pravica do odstopa</h2>
+            <p>V skladu z ZVPot lahko kupec v 14 dneh od prejema blaga odstopi od pogodbe brez navedbe razloga.</p>
+
+            <h2>6. Vračilo in reklamacijski postopek</h2>
+            <p>V primeru poškodovanih ali napačnih izdelkov kupec obvesti ponudnika v 8 dneh in lahko zahteva zamenjavo ali vračilo kupnine.</p>
+
+            <h2>7. Varovanje avtorskih pravic</h2>
+            <p>Vse vsebine na spletni strani www.urbanjr.si so zaščitene in jih ni dovoljeno kopirati ali uporabljati brez soglasja.</p>
+
+            <h2>8. Spori in pritožbe</h2>
+            <p>Spori se rešujejo sporazumno, v nasprotnem primeru je pristojno sodišče v Kranju. Spletno reševanje sporov: <a href="https://ec.europa.eu/consumers/odr">ODR platforma EU</a>.</p>
+        </div>
+    </div>
 
     <div class="petastrandrugiindex">
         <div class="poravnava">
@@ -254,6 +247,7 @@
             <a href="#" onclick="AdminClick()">Admin</a>
         </div>
     </div>
+
 <!-- pregled se pokaže če si admin   -->
 <script>
     window.onload = function() {
@@ -272,7 +266,7 @@
     function AdminClick() {
         var admin_mode = {{ admin_mode | tojson }};
         if (admin_mode) {
-            window.location.href = "/logout";
+            window.location.href = "/logout"; 
         } else {
             window.location.href = "/admin";
         }
@@ -298,7 +292,7 @@
                     document.getElementById("emailInput").style.backgroundColor = "#FF474C";
                 }
                 else{
-                    window.location.href = "/kosarica";
+                    window.location.href = "/blog";
                 }
             },
 
@@ -437,34 +431,6 @@
     });
 </script>
 
-<!--/* Tukaj je za izberi način dostave scripta */ -->
-<script>
-
-document.getElementById('myForm').addEventListener('submit', function(event) {
-    // Preveri, ali so radio gumbi skriti
-    var radios = document.getElementsByName('nacindostave');
-    var selected = false;
-
-    // Preveri, ali je en radio gumb izbran
-    for (var i = 0; i < radios.length; i++) {
-        console.log("Preverjam radio gumb:", radios[i].value); // Dodaj log za vsak radio gumb
-        if (radios[i].checked) {
-            selected = true;
-            console.log("Izbran radio gumb:", radios[i].value); // Log izbranega gumba
-            break;
-        }
-    }
-
-    // Če noben gumb ni izbran, prikaži opozorilo
-    if (!selected) {
-        alert('Prosimo, izberite način dostave!');
-        event.preventDefault(); // Prepreči pošiljanje obrazca
-    }
-});
-
-
-</script>
-<!--/* Tukaj je za izberi način dostave scripta */ -->
 
 <!--/* Tukaj je za cekiranje ce je mail prav napisan*/ -->
 <script>
@@ -484,7 +450,6 @@ setTimeout(() => {
     if (emailRegex.test(email)) {
         emailStatus.innerHTML = "✅";
         emailStatus.style.color = "green";
-        document.getElementById("emailInput").style.backgroundColor = "white";
     } else {
         emailStatus.innerHTML = "❌";
         emailStatus.style.color = "red";

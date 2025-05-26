@@ -92,22 +92,153 @@
                 </header>            
 
                 <div class="nadozadjemostali">
-                    <h1>POTREBUJETE POMOČ</h1>
-                    <p>Če imate <span>težave z oddajanjem naročila</span> si oglejte spodnji videoposnetek ali pa si predvajajte audio pomoč</p>
+                    <h1>PREGLEDNA PLOŠČA</h1>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="pomocvsebina">
-        <video controls>
-            <source src="/static/video/pomocvideo.mp4" type="video/mp4">
-        </video>
-        <audio controls>
-            <source src="/static/audio/zvokpomoc.mp3" type="audio/mp3">
-            Vaš brskalnik ne podpira audio elementa.
-        </audio>
+    <div class="pregledglavno">
+        <div class="prikazzaloge">
+            <h1>TRENUTNA ZALOGA</h1>
+
+            <form action="/nastavi_zalogo" method="POST">
+                {% for izdelek, kolicina in zaloga.items() %}
+                    <div class="izd">
+                        <label>{{ izdelek }}: </label>
+                        <input type="number" name="{{ izdelek }}" value="{{ kolicina }}">
+                    </div>
+                {% endfor %}
+                <button type="submit">Shrani zalogo</button>
+            </form>           
+        </div>
+        <div class="prikaznarocil">
+            <h1>NAROČILA</h1>
+
+            {% if narocila %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Ime</th>
+                            <th>Priimek</th>
+                            <th>Telefon</th>
+                            <th>E-pošta</th>
+                            <th>Naslov</th>
+                            <th>Dostava</th>
+                            <th>Izdelki</th>
+                            <th>Datum</th>
+                            <th>Cena</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for narocilo in narocila %}
+                        <tr>
+                            <td>{{ narocilo.ime }}</td>
+                            <td>{{ narocilo.priimek }}</td>
+                            <td>{{ narocilo.telefonska }}</td>
+                            <td>{{ narocilo.eposta }}</td>
+                            <td>{{ narocilo.kraj }} {{ narocilo.hisna_stevilka }}, {{ narocilo.postna_stevilka }}</td>
+                            <td>{{ "Dostava na dom" if narocilo.nacin_dostave == "dostava" else "Osebni prevzem" }}</td>
+                            <td>
+                                <ul>
+                                    {% for izdelek, kolicina in narocilo.izdelki.items() %}
+                                        <li>{{ izdelek }} x{{ kolicina }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                            <td>{{ narocilo.datum }}</td>
+                            <td>{{ narocilo.skupna_cena }} €</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>Trenutno ni nobenih naročil.</p>
+            {% endif %}
+        </div>
+
+        <div class="prikazmaili">
+            <h1>MAILI</h1>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th class="thkopiraj">
+                            <span>Email naslov &nbsp;</span>
+                            <button class="buttonCopyMails"onclick="copyText()">Kopiraj</button>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for oseba in maili %}
+                        <tr>
+                            <td>{{ oseba.mail }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
+    <div class="podonov">
+        <div class="dodajanjenovic">
+            <h1>DODAJTE NOVICO</h1>
+            <form method="POST" enctype="multipart/form-data">
+                <div class="besedilono">
+                    <p>
+                        <label>Naslov:<br>
+                            <input id="naslovNovica" type="text" name="naslov">
+                        </label>
+                    </p>
+                    <p>
+                        <label>Besedilo:<br>
+                            <textarea id="besediloNovica" name="besedilo"></textarea>
+                        </label>
+                    </p>
+                </div>
+                <div class="slikaposljino">
+                    <p>
+                        <label>Slika:<br>
+                            <input id="slikaNovica" type="file" name="slika">
+                        </label>
+                    </p>
+                    <button onclick="poskusDodajanjanovice(event)">Objavi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- poskus dodajanja novice -->
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function poskusDodajanjanovice(event) {
+            event.preventDefault();
+
+            var naslov = document.getElementById("naslovNovica").value;
+            var besedilo = document.getElementById("besediloNovica").value;
+            var slika = document.getElementById("slikaNovica").files[0];
+
+            var formData = new FormData();
+            formData.append("naslov", naslov);
+            formData.append("besedilo", besedilo);
+            formData.append("slika", slika);
+
+            $.ajax({
+                url: "/dodajnovico",
+                method: "POST",
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(result) {
+                    if (result.success == true) {
+                        window.location.href = "/blog";
+                    }
+                }
+            });
+        }
+    </script>
+
+    <!-- poskus dodajanja novice -->
 
     <div class="petastrandrugiindex">
         <div class="poravnava">
@@ -166,6 +297,7 @@
             <a href="#" onclick="AdminClick()">Admin</a>
         </div>
     </div>
+    
 <!-- pregled se pokaže če si admin   -->
 <script>
     window.onload = function() {
@@ -210,7 +342,7 @@ function poskusDodajanjaMail() {
                 document.getElementById("emailInput").style.backgroundColor = "#FF474C";
             }
             else{
-                window.location.href = "/pomoc";
+                window.location.href = "/pregled";
             }
         },
 
@@ -220,6 +352,17 @@ function poskusDodajanjaMail() {
 
 </script>
 
+<!--/* Text z e-maili */ -->
+<script>
+    function copyText() {
+        const text = {{narocniki_text| tojson}}
+        navigator.clipboard.writeText(text).then(function() {
+            alert("Vsi e-mail naslovi naročnikov so kopirani!");
+        }).catch(function(err) {
+            console.error("Napaka pri kopiranju:", err);
+        });
+    }
+    </script>
     <!--/* Tukaj je za telefonprikaz meni */ -->
     <script>
     function toggleMenu() {
@@ -349,7 +492,6 @@ function poskusDodajanjaMail() {
         });
     </script>
 
-
     <!--/* Tukaj je za cekiranje ce je mail prav napisan*/ -->
     <script>
     document.getElementById("emailInput").addEventListener("input", function () {
@@ -376,6 +518,6 @@ function poskusDodajanjaMail() {
     });
     </script>
     <!--/* Tukaj je za cekiranje ce je mail prav napisan*/ -->
-
+    
 </body>
 </html>

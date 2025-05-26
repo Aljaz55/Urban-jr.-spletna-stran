@@ -8,10 +8,10 @@
     <meta name="description" content="Kmetija v Dražgošah, ki vpeljuje principe regenerativnega kmetovanja.">
     <meta name="author" content="Izdelava spletnih strani Pintar, Jure Pintar">
 
-    <link rel="stylesheet" href="static/css/slog.css">
+    <link rel="stylesheet" href="../static/css/slog.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
-    <link rel="icon" href="static/images/skupne/Logo/Znak__URBAN JR_zelen.ico" type="image/x-icon">
+    <link rel="icon" href="../static/images/skupne/Logo/Znak__URBAN JR_zelen.ico" type="image/x-icon">
     <title>Urban JR. - Domov</title>
 </head>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -44,13 +44,23 @@
         <div class="temnoindex">
             <header>
                 <div class="logo">
-                    <a href=""><img src="static/images/skupne/Logo/1Logo__URBAN JR_horizontalen.png" alt="Logo"></a>
+                    <a href=""><img src="../static/images/skupne/Logo/1Logo__URBAN JR_horizontalen.png" alt="Logo"></a>
                 </div>
-            
-                <div class="menutelefon" onclick="toggleMenu()">
-                    <div class="crtica"></div>
-                    <div class="crtica"></div>
-                    <div class="crtica"></div>
+                <div class="portelpok">
+                    <li class="telpokazi">
+                        <a href="/kosarica">
+                        <i class="fa-solid fa-cart-arrow-down"></i>
+                        {% if st_izdelkov > 0 %}
+                        <span class="kosaricastevec">{{ st_izdelkov }}</span>
+                        {% endif %}
+                        </a>
+                    </li>
+
+                    <div class="menutelefon" onclick="toggleMenu()">
+                        <div class="crtica"></div>
+                        <div class="crtica"></div>
+                        <div class="crtica"></div>
+                    </div>
                 </div>
             
                 <nav class="navmenu" id="navmenu">
@@ -61,7 +71,7 @@
                         <li><a href="/blog">Blog</a></li>
                         <li><a href="/kontakt">Kontakt</a></li>
                         <li id="lipregled" style="display:none;"><a href="/pregled">Pregled</a></li>
-                        <li>
+                        <li class="racpokazi">
                             <a href="/kosarica">
                             <i class="fa-solid fa-cart-arrow-down"></i>
                             {% if st_izdelkov > 0 %}
@@ -71,7 +81,8 @@
                         </li>
                         <div class="search" id="search">
                             <input type="text" placeholder="Poiščite na strani..." id="search-input">
-                            <button class="gumbsearch" id="gumbsearch"><i class="fa-solid fa-magnifying-glass"></i></button>
+                            <button class="gumbmic" id="micButton"><i class="fa-solid fa-microphone"></i></button>
+                            <button class="gumbsearch" id="gumbsearch" onclick="SearchClick()"><i class="fa-solid fa-magnifying-glass"></i></button>
                         </div>
                     </ul>
                 </nav>
@@ -113,7 +124,7 @@
                 </div>
             </div>
             <div class="slikadruga">
-                <img src="static/images/index/DSC07955-18.JPG" alt="Pobiranje jajc">
+                <img src="../static/images/index/DSC07955-18.JPG" alt="Pobiranje jajc">
             </div>
         </div>
     </div>
@@ -149,22 +160,22 @@
         </div>
         <div class="slike">
             <div class="okvir">
-                <img src="static/images/index/DSC08206-47.JPG" alt="Prva slika">
+                <img src="../static/images/index/DSC08206-47.JPG" alt="Prva slika">
             </div>
             <div class="okvir">
-                <img src="static/images/index/DSC08231-51.JPG" alt="Druga slika">
+                <img src="../static/images/index/DSC08231-51.JPG" alt="Druga slika">
             </div>
             <div class="okvir">
-                <img src="static/images/index/DSC08089-36.JPG" alt="Tretja slika">
+                <img src="../static/images/index/DSC08089-36.JPG" alt="Tretja slika">
             </div>
             <div class="okvir">
-                <img src="static/images/index/DSC08003-25.JPG" alt="Cetrta slika">
+                <img src="../static/images/index/DSC08003-25.JPG" alt="Cetrta slika">
             </div>
             <div class="okvir">
-                <img src="static/images/index/DSC08099-37.JPG" alt="Peta slika">
+                <img src="../static/images/index/DSC08099-37.JPG" alt="Peta slika">
             </div>
             <div class="okvir">
-                <img src="static/images/index/DSC07888-6.JPG" alt="Šesta slika">
+                <img src="../static/images/index/DSC07888-6.JPG" alt="Šesta slika">
             </div>
         </div>
         <div class="gumb">
@@ -288,7 +299,7 @@
             <footer>
                 <div class="stolpec prvi">
                     <div class="logo">
-                        <img src="static/images/skupne/Logo/1Logo__URBAN JR_vertikalen.png" alt="Logotip">
+                        <img src="../static/images/skupne/Logo/1Logo__URBAN JR_vertikalen.png" alt="Logotip">
                     </div>
                     <h2>SPLOŠNI PODATKI</h2>
                     <ul>
@@ -312,9 +323,9 @@
                 <div class="stolpec tretji">
                     <h2>PRAVNI PODATKI</h2>
                     <ul>
-                        <li><a href="">Podjetje in kontaktni podatki</a></li>
-                        <li><a href="">Politika zasebnosti</a></li>
-                        <li><a href="">Pogoji poslovanja</a></li>
+                        <li><a href="/pravno#kopo">Podjetje in kontaktni podatki</a></li>
+                        <li><a href="/pravno#poza">Politika zasebnosti</a></li>
+                        <li><a href="/pravno#popo">Pogoji poslovanja</a></li>
                     </ul>
                 </div>
                 <div class="stolpec cetrti">
@@ -404,10 +415,82 @@
     </script>
 <!--/* Tukaj je za telefonprikaz meni */ -->
 
+<!--/* mikrofon delovanje prepoznava govora */ -->
+<script>
+    const micButton = document.getElementById('micButton');
+    const Input = document.getElementById('search-input');
+    micButton.style.transition = 'background-color 0.3s ease';
+    
+    try {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (SpeechRecognition) {
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'sl-SI';
+            recognition.interimResults = true;
+            recognition.continuous = false;
+            
+            micButton.addEventListener('click', () => {
+                if (micButton.classList.contains('listening')) {
+                    recognition.stop();
+                    micButton.classList.remove('listening');
+                    micButton.style.backgroundColor = '';
+                    return;
+                }
+                
+                recognition.start();
+                micButton.classList.add('listening');
+                micButton.style.backgroundColor = '#ffffff';
+            });
+
+            recognition.onresult = (e) => {
+                const transcript = Array.from(e.results)
+                    .map(result => result[0])
+                    .map(result => result.transcript)
+                    .join('');
+                
+                Input.value = transcript;
+                
+                if (e.results[0].isFinal) {
+                    micButton.classList.remove('listening');
+                    micButton.style.backgroundColor = ''; 
+                }
+            };
+
+            recognition.onerror = () => {
+                micButton.classList.remove('listening');
+                micButton.style.backgroundColor = ''; 
+            };
+            
+            recognition.onend = () => {
+                micButton.classList.remove('listening');
+                micButton.style.backgroundColor = ''; 
+            };
+        }
+    } catch (e) {
+        console.log("Speech recognition not available");
+    }
+</script>
+
+<!--/* Tukaj je za search button na search baru skripta */ -->
+<script>
+    function SearchClick() {
+        let izdelki = ["Jajca", "Piščanci", "Mleko", "Zelenjava", "Govedina"];
+        const searchInput = document.getElementById('search-input');
+        const searchValue = searchInput.value.trim().toLowerCase();
+        
+
+        const matchFound = izdelki.some(item => 
+            item.toLowerCase() === searchValue
+        );
+        
+        if (matchFound) {
+            window.location.href = '/trgovina';
+        }
+    }
+</script>
 <!--/* Tukaj je za search bar scripta */ -->
 <script>
-    let izdelki = ["Jajca", "Piščanec", "Mleko", "Zelenjava", "Govedina"];
-    
+    let izdelki = ["Jajca", "Piščanci", "Mleko", "Zelenjava", "Govedina"];
     const searchInput = document.getElementById('search-input');
     const searchResultsContainer = document.getElementById('search-results');
     

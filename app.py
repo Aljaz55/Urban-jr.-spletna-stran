@@ -7,7 +7,7 @@ import requests
 import os
 import html
 from datetime import datetime 
-import json
+import json 	
 import traceback
 
 # databaza
@@ -26,7 +26,8 @@ import re
 #tajnost
 from dotenv import load_dotenv
 
-
+#prepoznava govora
+from google.cloud import speech
 
 
 # ---------- NALOZI  ----------
@@ -171,34 +172,55 @@ def poskusDodajanjaMail():
     else:
         return jsonify(success=False)
 
-# ---------- INSTAGRAM API  ----------
-igtoken = ""
-iguporabnik = ""
-igapi = ""
+# ---------- Pošiljanje novic  ----------
 
-def instagramapi():
-    objave = {
-        "fields": "id,caption,media_type,media_url,permalink",
-        "access_token": igtoken,
-        "limit": 6
-    }
+noviceDB = TinyDB('novice.json')
 
-    odgovor = requests.get(igapi, params=objave)
-    return odgovor.json().get("data", [])
+# Pot za slike
+UPLOAD_FOLDER = os.path.join("static", "images", "novice")
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+@app.route("/dodajnovico", methods=["POST"])
+def dodajnovico():
+    naslov = request.form.get("naslov")
+    besedilo = request.form.get("besedilo")
+    slika_file = request.files.get("slika")
+
+    slika_ime = ""
+    if slika_file:
+        slika_ime = slika_file.filename
+        slika_path = os.path.join(UPLOAD_FOLDER, slika_ime)
+        slika_file.save(slika_path)
+
+    User = Query()
+    if len(noviceDB.search(User.naslov == naslov)) == 0:
+        noviceDB.insert({
+            "naslov": naslov,
+            "besedilo": besedilo,
+            "slika": slika_ime,
+            "cas": datetime.utcnow().isoformat()
+        })
+
+    return jsonify(success=True)
+
+@app.route("/odstrani_novico", methods=["POST"])
+def odstrani_novico():
+    if not session.get('admin_mode'):
+        return redirect(url_for("blog"))
+
+    naslov = request.form.get("naslov")
+    User = Query()
+    noviceDB.remove(User.naslov == naslov)
+
+    return redirect(url_for("blog"))
 
 @app.route("/blog")
-
 def blog():
-    poslji = instagramapi
     admin_mode = session.get('admin_mode', False)
-    return render_template("blog.html", post=poslji,admin_mode=admin_mode)
-
-@app.route("/api/poslji")
-
-def apiposlji():
-    poslji = instagramapi
-    return jsonify(poslji)
-
+    vse_novice = noviceDB.all()
+    # sortiramo po času padajoče, najnovejša prva
+    vse_novice_sorted = sorted(vse_novice, key=lambda x: x.get("cas", ""), reverse=True)
+    return render_template("blog.html", admin_mode=admin_mode, novice=vse_novice_sorted)
 
 # ---------- Delovanje kosarice ----------
 
@@ -996,9 +1018,28 @@ Sporočilo:
 
     return redirect(url_for('kontakt'))
 
+# ---------- prepoznavanje govora ----------
+@app.route('/speech-to-text', methods=['POST'])
+def speech_to_text():
+    audio_file = request.files['audio']
+    audio_content = audio_file.read()
+    
+    client = speech.SpeechClient()
+    audio = speech.RecognitionAudio(content=audio_content)
+    config = speech.RecognitionConfig(
+        encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
+        sample_rate_hertz=16000,
+        language_code="sl-SI",
+    )
+
+    response = client.recognize(config=config, audio=audio)
+    
+    if response.results:
+        transcript = response.results[0].alternatives[0].transcript
+        return jsonify({'transcript': transcript})
+    return jsonify({'error': 'Ni bilo mogoče razumeti govora.'}), 400
 
 
-
-app.run(debug = True, port=8800)
+app.run(debug = True, port=5000)
 
 
